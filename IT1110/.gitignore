@@ -1,0 +1,15 @@
+*.exe
+*.o
+*.inp
+*.out
+*.ans
+*.err
+*.depend 
+*.layout
+*.save
+*.cbp
+*.txt
+*.log
+*.rar
+*.zip
+*.contest
