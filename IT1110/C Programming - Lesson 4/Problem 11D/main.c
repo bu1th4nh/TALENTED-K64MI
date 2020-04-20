@@ -185,7 +185,8 @@ void drawFan()        //Canh quat
         FOR(j, 1, n-i) pc(sp), pc(sp);
         FOR(j, n-i+1, n) pc(ch), pc(sp);
         pc(el);
-        //Termination mark    }
+        //Termination mark
+    }
     FOR(i, 1, n)
     {
         //Upper-Left
@@ -255,7 +256,7 @@ int main(int argc, char *argv[])
 {
     Enter();
     Solve();
-	return 0;
+    return 0;
 }
 
 //=============================================================================//
