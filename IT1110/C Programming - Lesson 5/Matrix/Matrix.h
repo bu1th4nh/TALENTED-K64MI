@@ -65,14 +65,15 @@ struct Matrix
 
 //*************************************************
 //Matrix Construction
-//*************************************************struct Matrix mat_zeros(int n_col, int n_row)
+//*************************************************
+struct Matrix mat_zeros(int n_col, int n_row)
 {
     struct Matrix ret;
     ret.n_col = n_col;
     ret.n_row = n_row;
 
     //Memory allocation
-    ret.mat = (MAT_TYPE **)malloc(n_row * sizeof(MAT_TYPE *));      //ggwp
+    ret.mat = (MAT_TYPE **)malloc(n_row * sizeof(MAT_TYPE *));      //Good game well-play =)))))
     FORl(i, 0, n_row)
     {
         ret.mat[i] = (MAT_TYPE *)malloc(n_col * sizeof(MAT_TYPE));
