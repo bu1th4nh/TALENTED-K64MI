@@ -53,7 +53,7 @@
 
 
 //=================================================================================
-//Matrices
+//Matrix Setup & I/O Args
 #define MAT_TYPE long long
 #define MAT_TYPE_IO_ARG "%lld"
 
