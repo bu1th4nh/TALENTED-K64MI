@@ -89,56 +89,38 @@ struct Matrix mat_identity(int sz)
     return ret;
 };
 
-//*************************************************
-//Matrix Utilities
-//*************************************************
-//Check utils
-bool mat_is_square(struct Matrix A)
-{
-    return A.n_col == A.n_row;
-}
-bool mat_is_symmetric(struct Matrix A)
-{
-    //Is A square?
-    if(!mat_is_square(A)) return 0;
 
 
-    FORl(i, 0, A.n_col) FORl(j, 0, i-1)
+//*************************************************
+//Matrix In/Out
+//*************************************************
+struct Matrix mat_scan(int n_row, int n_col)
+{
+    struct Matrix ret = mat_zeros(n_row, n_col);
+    FORl(i, 0, n_row)
     {
-        if(A.mat[i][j] != A.mat[j][i]) return 0;
+        FORl(j, 0, n_col)
+        {
+            scanf(MAT_TYPE_IO_ARG, &ret.mat[i][j]);
+        }
     }
-    return 1;
-}
-
-//Calculate utils
-MAT_TYPE mat_trace(struct Matrix A)
-{
-    //Is A square?
-    if(!mat_is_square(A)) return 0;
-
-    //Is A square?
-    MAT_TYPE ret = 0;
-    int n = A.n_row;
-
-    FORl(i, 0, n) ret += A.mat[i][i];
     return ret;
 }
-MAT_TYPE mat_rev_trace(struct Matrix A)
+void mat_print(struct Matrix A)
 {
-    if(!mat_is_square(A)) return 0;
-
-    MAT_TYPE ret = 0;
-    int n = A.n_row;
-
-    FORl(i, 0, n) ret += A.mat[i][n-i-1];
-    return ret;
+    FORl(i, 0, A.n_row)
+    {
+        FORl(j, 0, A.n_col)
+        {
+            printf(MAT_TYPE_IO_ARG, A.mat[i][j]);
+            putchar(' ');
+        }
+        putchar('\n');
+    }
 }
-MAT_TYPE * mat_extract_row(int u, struct Matrix A)
-{
-    //0-indexed
-    assert(u < A.n_row);
-    return A.mat[u];
-}
+
+
+
 
 
 //*************************************************
@@ -193,32 +175,98 @@ struct Matrix mat_mul(struct Matrix A, struct Matrix B)
 };
 
 
+
+
+
+
 //*************************************************
-//Matrix In/Out
+//Matrix Utilities
 //*************************************************
-struct Matrix mat_scan(int n_row, int n_col)
+//Check utils
+bool mat_is_square(struct Matrix A)
 {
-    struct Matrix ret = mat_zeros(n_row, n_col);
-    FORl(i, 0, n_row)
+    return A.n_col == A.n_row;
+}
+bool mat_is_symmetric(struct Matrix A)
+{
+    //Is A square?
+    if(!mat_is_square(A)) return 0;
+
+
+    //Is A symmetric?
+    FORl(i, 0, A.n_col) FORl(j, 0, i-1)
     {
-        FORl(j, 0, n_col)
-        {
-            scanf(MAT_TYPE_IO_ARG, &ret.mat[i][j]);
-        }
+        if(A.mat[i][j] != A.mat[j][i]) return 0;
     }
+    return 1;
+}
+
+
+//Calculation utils
+MAT_TYPE mat_trace(struct Matrix A)             //Calculate trace a.k.a sum of main diagonal elements
+{
+    //Is A square?
+    if(!mat_is_square(A)) return 0;
+
+
+    MAT_TYPE ret = 0;
+    int n = A.n_row;
+
+    //Calculate trace a.k.a sum of main diagonal elements
+    FORl(i, 0, n) ret += A.mat[i][i];
     return ret;
 }
-void mat_print(struct Matrix A)
+MAT_TYPE mat_rev_trace(struct Matrix A)         //Calculate the sum of sub-diagonal elements;
 {
-    FORl(i, 0, A.n_row)
+    //Check if the matrix is square one
+    if(!mat_is_square(A)) return 0;
+
+    MAT_TYPE ret = 0;
+    int n = A.n_row;
+
+    //Calculate the sum of sub-diagonal elements;
+    FORl(i, 0, n) ret += A.mat[i][n-i-1];
+    return ret;
+}
+MAT_TYPE mat_det(struct Matrix A)               //Calculate the determinant of a matrix
+{
+    //Check if the matrix is square one
+    int n = A.n_col;
+    if(!mat_is_square(A)) return 0;
+
+
+    //Copy matrix A to B
+    struct Matrix B = mat_zeros(A.n_row, A.n_col);
+    FORl(i, 0, n) FORl(j, 0, n) B.mat[i][j] = A.mat[i][j];
+
+
+    //Gaussian elimination
+    MAT_TYPE div_factor  = 1;
+    MAT_TYPE determinant = 1;
+    FORl(k, 0, n)
     {
-        FORl(j, 0, A.n_col)
+        FORl(i, k+1, n) if(B.mat[i][k])
         {
-            printf(MAT_TYPE_IO_ARG, A.mat[i][j]);
-            putchar(' ');
+            div_factor *= B.mat[k][k];
+            FORb(j, n-1, 0) B.mat[i][j] = B.mat[k][k] * B.mat[i][j] - B.mat[i][k] * B.mat[k][j];
         }
-        putchar('\n');
     }
+
+
+    //Calculate determinant
+    FORl(i, 0, n) determinant *= B.mat[i][i];
+    determinant /= div_factor;
+    return determinant;
+}
+
+
+
+//Extraction util.
+MAT_TYPE * mat_extract_row(int u, struct Matrix A)
+{
+    //0-indexed
+    assert(u < A.n_row);
+    return A.mat[u];
 }
 
 

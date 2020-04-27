@@ -151,9 +151,18 @@ ll GCD(ll x, ll y)
 int main(int argc, char *argv[])
 {
     ll x, y;
-    scanf("%lld%lld", &x, &y);
-    printf("%lld\n", GCD(x, y));
-    printf("%lld\n", 1LL * x * y / GCD(x, y));
+    fflush(stdin);
+    do
+    {
+        scanf("%lld", &x);
+        scanf("%lld", &y);
+    }
+    while((y <= 0 || x <= 0) && feof(stdin) != EOF);
+
+
+    ll gcd = GCD(x, y);
+    printf("%lld\n", gcd);
+    printf("%lld\n", 1LL * x * y / gcd);
 	return 0;
 }
 

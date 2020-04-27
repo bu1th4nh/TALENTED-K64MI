@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
 {
     int n, sgn = 1;
     float x, S1 = 1.0, S2 = 1.0, S3 = 1.0, fact = 1.0;
-    scanf("%d", &n);
+    do scanf("%d", &n); while(n <= 0 && feof(stdin) != EOF);
     scanf("%f", &x);
 
     FOR(i, 1, n)

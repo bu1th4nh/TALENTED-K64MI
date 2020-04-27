@@ -65,22 +65,29 @@ int m, n;
 void Enter()
 {
     #ifdef FRIENDLY_UX
-    printf("Nhap kich co ma tran: (so dong, so cot) = ");
+    printf("Nhap so dong ma tran: ");
     #endif // FRIENDLY_UX
+    scanf("%d", &n);
 
-    scanf("%d%d", &n, &m);
+
+    #ifdef FRIENDLY_UX
+    printf("Nhap so cot ma tran: ");
+    #endif // FRIENDLY_UX
+    scanf("%d", &m);
+
+
     A = B = mat_zeros(n, m);
+
 
     #ifdef FRIENDLY_UX
     printf("Nhap cac phan tu ma tran A: \n");
     #endif // FRIENDLY_UX
-
     A = mat_scan(n, m);
+
 
     #ifdef FRIENDLY_UX
     printf("Nhap cac phan tu ma tran B: \n");
     #endif // FRIENDLY_UX
-
     B = mat_scan(n, m);
 }
 
@@ -92,34 +99,46 @@ void Solve()
     FORl(i, 1, n-1) sum_edge += A.mat[i][0] + A.mat[i][m-1];
 
     #ifdef FRIENDLY_UX
-    printf("Tong phan tu tren 4 canh bien ma tran A: ");
+    printf("\nTong phan tu tren 4 canh bien ma tran A: ");
     #endif // FRIENDLY_UX
     printf(MAT_TYPE_IO_ARG, sum_edge); putchar('\n');
 
     if(mat_is_square(A))
     {
         #ifdef FRIENDLY_UX
-        printf("Ma tran nay vuong. Tong phan tu 2 duong cheo ma tran A: ");
+        printf("\nMa tran nay vuong. Tong phan tu 2 duong cheo ma tran A: ");
         #endif // FRIENDLY_UX
 
         MAT_TYPE complement_value = (n & 1) ? A.mat[(n >> 1)][(n >> 1)] : 0;
         printf(MAT_TYPE_IO_ARG, mat_trace(A) + mat_rev_trace(A) - complement_value); putchar('\n');
+
+        #ifdef FRIENDLY_UX
+        printf("\nDinh thuc cua ma tran A: ");
+        #endif // FRIENDLY_UX
+
+        printf(MAT_TYPE_IO_ARG, mat_det(A)); putchar('\n');
+    }
+    else
+    {
+        #ifdef FRIENDLY_UX
+        printf("\nMa tran nay khong vuong. \n");
+        #endif // FRIENDLY_UX
     }
 
     #ifdef FRIENDLY_UX
-    printf("A + B = \n");
+    printf("\nA + B = \n");
     #endif // FRIENDLY_UX
     mat_print(mat_add(A, B));
 
 
     #ifdef FRIENDLY_UX
-    printf("A - B = \n");
+    printf("\nA - B = \n");
     #endif // FRIENDLY_UX
     mat_print(mat_sub(A, B));
 
 
     #ifdef FRIENDLY_UX
-    printf("A * B = \n");
+    printf("\nA * B = \n");
     #endif // FRIENDLY_UX
     mat_print(mat_mul(A, B));
 }

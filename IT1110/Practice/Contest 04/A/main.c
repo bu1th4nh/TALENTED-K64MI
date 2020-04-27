@@ -136,14 +136,20 @@ template<class T> void print(T __X)
 //Typedefs
 typedef long long ll;
 typedef unsigned long long ull;
-
-
 //Main Procedure
 int main(int argc, char *argv[])
 {
-    ll x, fact = 1LL;
-    scanf("%lld", &x);
-    if(x < 8) FOR(i, 1, x) fact *= 1LL * i;
+    ll fact = 1LL;
+    int n;
+
+    do
+    {
+        scanf("%d\n", &n);
+        if(feof(stdin)) break;
+    }
+    while(n <= 0 || n > 8);
+
+    FOR(i, 1, n) fact *= 1LL * i;
     printf("%lld", fact);
 	return 0;
 }
