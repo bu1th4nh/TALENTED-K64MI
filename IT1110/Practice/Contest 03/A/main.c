@@ -139,7 +139,7 @@ template<class T> void print(T __X)
 //Typedefs
 typedef long long ll;
 typedef unsigned long long ull;
-typedef float ld;
+typedef double ld;
 
 
 
@@ -175,9 +175,9 @@ ld __abs(ld x)
 int main(int argc, char *argv[])
 {
     ld x, y, z, f;
-    scanf("%f", &x);
-    scanf("%f", &y);
-    scanf("%f", &z);
+    scanf("%lf", &x);
+    scanf("%lf", &y);
+    scanf("%lf", &z);
 
     f = ((x + y + z) / (pow(y, 2) + pow(x, 2) + 1)) - __abs(x - z * cos(y));
     printf("%.6f\n", f);
