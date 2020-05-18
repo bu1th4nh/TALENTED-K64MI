@@ -1,0 +1,9 @@
+Release/*.*
+*.vcxproj.filters
+*.vcxproj.user 
+*.vcxproj
+*.sln
+*.csv
+.vs
+
+
