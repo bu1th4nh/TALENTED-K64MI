@@ -149,7 +149,7 @@ void Stage1EnterData()
     while (getline(SLOTS, str)) EnterSlots(str, B, Slots_Encode, Slots_Decode);
     nSlots = B.size();
 
-    shuffle(whole(A), rng);
+    //shuffle(whole(A), rng);
 }      
 void Stage2EnterData()
 {
@@ -162,7 +162,7 @@ void Stage2EnterData()
     B = B2;
     for (auto sl : B) Slots_Encode[sl] = ++nSlots, Slots_Decode[nSlots] = sl;
 
-    shuffle(whole(A), rng);
+    //shuffle(whole(A), rng);
 }
 
 
@@ -222,6 +222,10 @@ void Stage1Matching()
         {
             //Assume there are no class unmatched in stage 1
             B2.push_back(Slots_Decode[i]);
+            
+            #ifdef PRINT_OUTPUT
+            wcout << B2.back().week << sp << B2.back().date << sp << Slots_Decode[i].information << el;
+            #endif
         }
     }
 
@@ -245,11 +249,11 @@ void Stage2Matching()
     vi mat = MatchingPool.extract_match_from_x();
 
     for (auto x : Previous_Stage1) RESULT << x;
-    FORl(i, 1, res.size()) if(res[i])
+    FORl(i, 1, res.size()) 
     {
         wstring matched = OutputMatch(i, res);
         RESULT << matched;
-        ++cnt;
+        if(res[i]) ++cnt;
 
         #ifdef PRINT_OUTPUT
         wcout << matched;

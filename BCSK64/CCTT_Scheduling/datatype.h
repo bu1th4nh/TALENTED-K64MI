@@ -127,10 +127,10 @@ struct Class_InputData_Type
             if (inPool(word[i], Afternoon)) available[date][4] = available[date][5] = 1;
 
             //Other cases
-            FORl(j, 0, word[i].size()) if (word[i][j] == L'_' || word[i][j] == L'+')
+            if (word[i][0] == L'_')
             {
-                FORl(k, j + 1, word[i].size()) if (isdigit(word[i][k])) available[date][word[i][k] - '0'] = 1;
-                break;
+                FORl(k, 1, word[i].size()) if (isdigit(word[i][k])) available[date][word[i][k] - '0'] = 1;
+                //break;
             }
         }
     }
@@ -218,7 +218,9 @@ void EnterClass(wstring str, Class_InputData_Type_Pool& _A, Class_InputData_Type
 void EnterSlots(wstring str, Slots_InputData_Type_Pool& _B, Slots_InputData_Type_Encode& _Slots_Encode, Slots_InputData_Type_Decode& _Slots_Decode)
 {
     Slots_InputData_Type test_slot(str);
-    FOR(i, 1, (test_slot.week >= 44 ? 3 : 2))
+
+    int limit = test_slot.week >= 44 ? 3 : 2;
+    FOR(i, 1, limit)
     {
         _B.emplace_back(str);
         _B.back().match_id = i;
