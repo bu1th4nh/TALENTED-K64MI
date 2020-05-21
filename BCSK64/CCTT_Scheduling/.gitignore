@@ -4,6 +4,7 @@ Release/*.*
 *.vcxproj
 *.sln
 *.csv
+*.txt
 .vs
 
 
