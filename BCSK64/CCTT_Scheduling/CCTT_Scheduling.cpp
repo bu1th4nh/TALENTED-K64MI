@@ -7,15 +7,20 @@
 \*==========================================================================================*/
 //=====================================
 //Solution Briefing - Foreword
+/*
+    
+    [VI]: - Chương trình xếp lịch cho sự kiện Chào cờ truyền thống Khóa 64, ĐH Bách khoa Hà Nội
+          - Thuật toán: Cặp ghép cực đại trên đồ thị hai phía + Xử lý CSV
+          - Tác giả: bu1th4nh (Bùi Tiến Thành), K64-CTTN Toán tin
 
+    (c) 2020 bu1th4nh. All rights reserved.
 
-
+ */
 //=====================================
 //Libraries and namespaces
 //#include <bits/stdc++.h>
 #include <algorithm>
 #include <bitset>
-#include <chrono>
 #include <cmath>
 #include <complex>
 #include <cstdio>
@@ -28,7 +33,6 @@
 #include <iomanip>
 #include <map>
 #include <queue>
-#include <random>
 #include <set>
 #include <sstream>
 #include <stack>
@@ -40,22 +44,22 @@
 #include <fcntl.h>
 #include <locale>
 #include <codecvt> 
-
-#include "hopcroftkarp.h"
-#pragma once
-
-#if __cplusplus >= 201103L
 #include <unordered_map>
 #include <unordered_set>
 #include <random>
 #include <chrono>
-#endif // __cplusplus
+
+#include "utility.h"
+#include "datatype.h"
+#include "hopcroftkarp.h"
+#pragma once
+
 
 using namespace std;
 
 //#define DEBUG
+//#define PRINT_OUTPUT                  //uncomment this to print the matched output to stdout
 #define OPTIONAL_FEATURE
-
 
 //=====================================
 //Macros
@@ -69,111 +73,11 @@ using namespace std;
 #define siz(x) (int)(x.size())
 #define len(x) (int)(x.length())
 #define whole(x) x.begin(), x.end()
-#define FOR(i, x, y) for(int i=x; i<=y; ++i)
-#define FORl(i, x, y) for(int i=x; i<y; ++i)
-#define FORb(i, x, y) for(int i=x; i>=y; --i)
-#define FORlb(i, x, y) for(int i=x; i>y; --i)
+#define FOR(i, x, y) for(int i=x; i<=(int)y; ++i)
+#define FORl(i, x, y) for(int i=x; i<(int)y; ++i)
+#define FORb(i, x, y) for(int i=x; i>=(int)y; --i)
+#define FORlb(i, x, y) for(int i=x; i>(int)y; --i)
 
-
-//=====================================
-//Constants
-locale loc(std::locale(), new std::codecvt_utf8<wchar_t>);
-vector<wstring> Morning({ L"sáng nghỉ", L"sáng", L"cả ngày", L"sáng+chiều", L"sáng và chiều", L"" });
-vector<wstring> Afternoon({ L"chiều nghỉ", L"chiều", L"cả ngày", L"sáng+chiều", L"sáng và chiều", L"" });
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-
-//=====================================
-//Data defs
-struct Class_InputData_Type
-{
-    wstring name, school, monday, wednesday, friday;
-    int qty;
-
-    Class_InputData_Type()
-    {
-        name = school = monday = wednesday = friday = L"";
-        qty = 0;
-    }
-    Class_InputData_Type(wstring inputted)
-    {
-        int cnt = 0;
-        wstring word[6];
-
-        for (auto c : inputted)
-        {
-            if (c == L',') ++cnt;
-            else word[cnt] += c;
-        }
-
-        
-        FOR(i, 3, 5) for(auto &ch: word[i]) ch = towlower(ch);
-
-        name        = word[0];
-        school      = word[1];
-        monday      = word[3];
-        wednesday   = word[4]; 
-        friday      = word[5];
-        qty         = stoi(word[2]);
-    }
-
-
-    bool operator< (const Class_InputData_Type& oth) const
-    {
-        return make_tuple(qty, school, name) < make_tuple(oth.qty, oth.school, oth.name);
-    }
-};
-
-struct Slots_InputData_Type
-{
-    wstring information;
-    int date, week, shift_id, match_id, seed;
-
-    Slots_InputData_Type()
-    {
-        date = week = shift_id = match_id = seed = 0;
-        information = L"";
-    }
-    Slots_InputData_Type(int _week, int _date, int _shift_id, int _match_id, wstring _information)
-    {
-        srand(time(NULL));
-
-        seed        = rand();
-        week        = _week;
-        date        = _date;
-        shift_id    = _shift_id;
-        match_id    = _match_id;
-        information = _information;
-    }
-    Slots_InputData_Type(wstring inputted)
-    {
-        srand(time(NULL));
-        seed = rand();
-        int cnt = 0;
-        wstring word[10];
-
-        for (auto c : inputted)
-        {
-            if (c == L',') ++cnt;
-            else word[cnt] += c;
-        }
-
-        week        = stoi(word[0]);
-        date        = stoi(word[1]);
-        shift_id    = stoi(word[2]);
-        information = word[3];
-    }
-
-
-    bool operator< (const Slots_InputData_Type& oth) const
-    {
-        return make_tuple(seed, week, date, shift_id, match_id) < make_tuple(oth.seed, oth.week, oth.date, oth.shift_id, oth.match_id);
-    }
-    bool operator== (const Slots_InputData_Type& oth) const
-    {
-        return make_tuple(seed, week, date, shift_id, match_id) == make_tuple(oth.seed, oth.week, oth.date, oth.shift_id, oth.match_id);
-    }
-
-};
 
 //=====================================
 //Typedefs
@@ -189,17 +93,6 @@ typedef vector<vii> vvii;
 typedef vector<wstring> vwstr;
 
 
-typedef vector<Class_InputData_Type>                               Class_InputData_Type_Pool;
-typedef map<Class_InputData_Type, int>                             Class_InputData_Type_Encode;
-typedef map<int, Class_InputData_Type>                             Class_InputData_Type_Decode;       //Vertex -> Data
-
-
-typedef vector<Slots_InputData_Type>                               Slots_InputData_Type_Pool;
-typedef map<Slots_InputData_Type, int>                             Slots_InputData_Type_Encode;
-typedef map<int, Slots_InputData_Type>                             Slots_InputData_Type_Decode;       //Vertex -> Data
-
-
-
 
 //=====================================
 //Data decalration
@@ -210,110 +103,71 @@ Class_InputData_Type_Encode         Class_Encode;
 Class_InputData_Type_Decode         Class_Decode;
 
 
-Slots_InputData_Type_Pool           B;
+Slots_InputData_Type_Pool           B, B2;
 Slots_InputData_Type_Encode         Slots_Encode;
 Slots_InputData_Type_Decode         Slots_Decode;
 
 int nClass, nSlots, nClass_2;
 vwstr Previous_Stage1;
 
+wifstream CLASS1, CLASS2, SLOTS;
+wofstream RESULT, DEBUG;
+
+
+
 //=====================================
 //Functions and procedures
+
+//----------------------------------------------------------
+//IO Declaration
+void IODeclaration()
+{
+    _setmode(_fileno(stdout), _O_WTEXT); //needed for output
+    _setmode(_fileno(stdin), _O_WTEXT); //needed for input
+
+    CLASS1 = wifstream("class_stage1.csv");  CLASS1.imbue(loc);
+    CLASS2 = wifstream("class_stage2.csv");  CLASS2.imbue(loc);
+    SLOTS  = wifstream("slots.csv");         SLOTS.imbue(loc);
+
+    RESULT = wofstream("final.csv");         RESULT.imbue(loc);
+    DEBUG  = wofstream("debug.txt");         DEBUG.imbue(loc);
+
+    RESULT << L"Tuần,Thứ,Kíp,STT Lớp,Thời gian,Sĩ số,Lớp,Viện\n";
+}
+
+
+//----------------------------------------------------------
 //Enter (both stages)
 void Stage1EnterData()
 {
     wstring str;
-    wifstream CLASS("class_stage1.csv");  CLASS.imbue(loc);
-    wifstream SLOTS("slots.csv");  SLOTS.imbue(loc);
     nClass = nSlots = 0;
 
-    while (getline(CLASS, str))
-    {
-        A.emplace_back(str); 
-        Class_Encode[A.back()] = ++nClass;
-        Class_Decode[nClass]   = A.back();
-    }
-    nClass_2 = nClass;
+    while (getline(CLASS1, str)) EnterClass(str, A, Class_Encode, Class_Decode);
+    nClass_2 = nClass = A.size();
 
-    while (getline(SLOTS, str))
-    {
-        Slots_InputData_Type s1(str); s1.match_id = 1;
-        Slots_InputData_Type s2(str); s2.match_id = 2;
-
-        B.push_back(s1); Slots_Encode[s1] = B.size(); Slots_Decode[B.size()] = s1;
-        B.push_back(s2); Slots_Encode[s2] = B.size(); Slots_Decode[B.size()] = s2;
-        
-        
-        if (s1.week >= 44) 
-        {
-            Slots_InputData_Type s3(str); 
-            s3.match_id = 3;
-            B.push_back(s3); 
-            Slots_Encode[s3] = B.size(); 
-            Slots_Decode[B.size()] = s3; 
-        }
-        
-    }
-
+    while (getline(SLOTS, str)) EnterSlots(str, B, Slots_Encode, Slots_Decode);
     nSlots = B.size();
 
     shuffle(whole(A), rng);
-}
+}      
 void Stage2EnterData()
 {
     wstring str;
-    wifstream CLASS("class_stage2.csv");   CLASS.imbue(loc);
-    wifstream SLOTS("result_stage1.csv");  SLOTS.imbue(loc);
     nClass = nSlots = 0;
 
-    while (getline(CLASS, str))
-    {
-        A.emplace_back(str);
-        Class_Encode[A.back()] = ++nClass;
-        Class_Decode[nClass] = A.back();
-    }
+    while (getline(CLASS2, str)) EnterClass(str, A, Class_Encode, Class_Decode);
+    nClass = A.size();
 
+    B = B2;
+    for (auto sl : B) Slots_Encode[sl] = ++nSlots, Slots_Decode[nSlots] = sl;
 
-    while (getline(SLOTS, str))
-    {
-        wstring word[10];
-        int cnt = 0;
-
-        for (auto c : str)
-        {
-            if (c == L',') ++cnt;
-            else word[cnt] += c;
-        }
-
-        if (stoi(word[5]) == 0)
-        {
-            Slots_InputData_Type sl = Slots_InputData_Type(
-                stoi(word[0]),
-                stoi(word[1]),
-                stoi(word[2]),
-                stoi(word[3]),
-                word[4]
-            );
-
-            B.push_back(sl);
-            Slots_Encode[sl] = B.size();
-            Slots_Decode[B.size()] = sl;
-        }
-        else Previous_Stage1.push_back(str);
-    }
-
-    nSlots = B.size();
-    //random_shuffle(whole(A));
+    shuffle(whole(A), rng);
 }
 
 
-
+//----------------------------------------------------------
 //Build Graph
-bool inPool(wstring val, vwstr& vect)
-{
-    sort(whole(vect));
-    return binary_search(whole(vect), val);
-}
 void BuildGraph()
 {
     MatchingPool.reset(nClass, nSlots);
@@ -324,17 +178,7 @@ void BuildGraph()
         for (auto sl : B)
         {
             bool cond = 0;
-            if (sl.date == 2 && sl.shift_id <= 3 && inPool(cl.monday, Morning))        cond = 1;
-            if (sl.date == 2 && sl.shift_id >  3 && inPool(cl.monday, Afternoon))      cond = 1;
-            
-            if (sl.date == 4 && sl.shift_id <= 3 && inPool(cl.wednesday, Morning))     cond = 1;
-            if (sl.date == 4 && sl.shift_id >  3 && inPool(cl.wednesday, Afternoon))   cond = 1;
-            
-            if (sl.date == 6 && sl.shift_id <= 3 && inPool(cl.friday, Morning))        cond = 1;
-            if (sl.date == 6 && sl.shift_id >  3 && inPool(cl.friday, Afternoon))      cond = 1;
-
-
-            if (cond) MatchingPool.addEdge(Class_Encode[cl], Slots_Encode[sl]);
+            if(cl.available[sl.date][sl.shift_id]) MatchingPool.addEdge(Class_Encode[cl], Slots_Encode[sl]);
 
             //wcerr << cond << sp << Class_Encode[cl] << sp << Slots_Encode[sl] << el;
         }
@@ -342,10 +186,47 @@ void BuildGraph()
 }
 
 
+//----------------------------------------------------------
 //Process
-void InitializeMatching()
+wstring OutputMatch(int i, vi &partial_result)
+{
+    wstringstream matched; matched.imbue(loc);
+    Slots_InputData_Type sl = Slots_Decode[i];
+    Class_InputData_Type cl = Class_Decode[partial_result[i]];
+
+    matched << sl.week << com << sl.date << com << sl.shift_id
+        << com << sl.match_id << com << sl.information << com
+        << cl.qty << com << cl.name << com << cl.school << el;
+
+    return matched.str();
+}
+void Stage1Matching()
 {
     MatchingPool.initMatch();
+
+    int cnt = 0;
+    vi partial_result = MatchingPool.extract_match_from_y();
+    vi mat_check      = MatchingPool.extract_match_from_x();
+    FORl(i, 1, partial_result.size())
+    {
+        if (partial_result[i])
+        {
+            Previous_Stage1.push_back(OutputMatch(i, partial_result));
+            ++cnt;
+
+            #ifdef PRINT_OUTPUT
+            wcout << Previous_Stage1.back();
+            #endif
+        }
+        else
+        {
+            //Assume there are no class unmatched in stage 1
+            B2.push_back(Slots_Decode[i]);
+        }
+    }
+
+    FORl(i, 0, nClass) if (mat_check[i + 1] == 0) wcout << L"Found unmatched at: " << A[i].name << el;
+    wcout << L"Stage 1 matched " << cnt << " out of " << nClass << " !" << el;
 }
 void Stage1Cleanup()
 {
@@ -355,107 +236,71 @@ void Stage1Cleanup()
     Slots_Decode.clear();
     Slots_Encode.clear();
 }
-
-
-
-//Stage 1 Output Data
-void Stage1OutputData()
+void Stage2Matching()
 {
+    MatchingPool.initMatch();
+
     int cnt = 0;
     vi res = MatchingPool.extract_match_from_y();
-    wofstream fo("result_stage1.csv"); fo.imbue(loc);
+    vi mat = MatchingPool.extract_match_from_x();
 
-    FORl(i, 1, res.size())
+    for (auto x : Previous_Stage1) RESULT << x;
+    FORl(i, 1, res.size()) if(res[i])
     {
-        Slots_InputData_Type sl = Slots_Decode[i];
-        Class_InputData_Type cl = Class_Decode[res[i]];
+        wstring matched = OutputMatch(i, res);
+        RESULT << matched;
+        ++cnt;
 
-        fo << sl.week << com << sl.date << com << sl.shift_id 
-           << com << sl.match_id << com << sl.information << com 
-           << cl.qty << com << cl.name << com << cl.school << el;
-        cnt += (cl.qty != 0);
-
-        wcout << sl.week << L"," << sl.date << com << sl.shift_id
-            << com << sl.match_id << com << sl.information << com
-            << cl.qty << com << cl.name << com << cl.school << el;
-    }
-
-    wcout << L"Stage 1 matched " << cnt << " out of " << nClass << " !" << el;
-}
-//Stage 2 Output Data
-void Stage2OutputData()
-{
-    int cnt = 0;
-    vi res = MatchingPool.extract_match_from_y();
-    wofstream fo("final.csv"); fo.imbue(loc);
-
-    fo << L"Tuần,Thứ,Kíp,STT Lớp,Thời gian,Sĩ số,Lớp,Viện\n";
-    for (auto x : Previous_Stage1) fo << x << el;
-    FORl(i, 1, res.size())
-    {
-        Slots_InputData_Type sl = Slots_Decode[i];
-        Class_InputData_Type cl = Class_Decode[res[i]];
-
-        fo << sl.week << L"," << sl.date << com << sl.shift_id
-            << com << sl.match_id << com << sl.information << com
-            << cl.qty << com << cl.name << com << cl.school << el;
-        cnt += (cl.qty != 0);
-
-
-        wcout << sl.week << L"," << sl.date << com << sl.shift_id
-            << com << sl.match_id << com << sl.information << com
-            << cl.qty << com << cl.name << com << cl.school << el;
+        #ifdef PRINT_OUTPUT
+        wcout << matched;
+        #endif
     }
 
 
+    FORl(i, 0, nClass) if (mat[i + 1] == 0) wcout << L"Found unmatched at: " << A[i].name << el;
     wcout << L"Stage 2 matched " << cnt+Previous_Stage1.size() << " out of " << nClass+nClass_2 << " !" << el;
 }
 
 
-//Debugging
-void Debug()
+//----------------------------------------------------------
+//Stage wraps
+void Stage1()
 {
-    wofstream DEBUG("debug.csv");  DEBUG.imbue(loc);
-
-    for (auto x : A)
-    {
-        DEBUG << x.name << com << x.monday << com << x.wednesday << com << x.friday << el;
-    }
-
-    /*
-    for (auto x : B)
-    {
-        DEBUG << x.week << sp << x.date << sp << x.shift_id << sp << x.match_id << sp << x.information << el;
-    }
-
-    DEBUG << el << el;
-    for (auto x : Slots_Encode)
-    {
-        DEBUG << x.first.information << sp << x.first.match_id << sp << x.second << el;
-    }
-    */
-}
-
-
-
-//Main Procedure
-int wmain()
-{
-    _setmode(_fileno(stdout), _O_WTEXT); //needed for output
-    _setmode(_fileno(stdin), _O_WTEXT); //needed for input
+    timeStart = chrono::steady_clock::now();
 
     Stage1EnterData();
     BuildGraph();
-    InitializeMatching();
-    Stage1OutputData();
-
+    Stage1Matching();
     Stage1Cleanup();
+
+    timeEnd = chrono::steady_clock::now();
+    wcout << L"Stage 1 completed with elapsed time: " << chrono::duration<double>(timeEnd - timeStart).count() << L" second(s)" << el;
+}
+void Stage2()
+{
+    timeStart = chrono::steady_clock::now();
 
     Stage2EnterData();
     BuildGraph();
-    InitializeMatching();
-    Stage2OutputData();
+    Stage2Matching();
 
+    timeEnd = chrono::steady_clock::now();
+    wcout << L"Stage 2 completed with elapsed time: " << chrono::duration<double>(timeEnd - timeStart).count() << L" second(s)" << el;
+}
+
+
+//----------------------------------------------------------
+//Main Procedure
+int wmain()
+{
+    Full_timeStart = chrono::steady_clock::now();
+
+    IODeclaration();
+    Stage1();
+    Stage2();
+
+    Full_timeEnd   = chrono::steady_clock::now();
+    wcout << L"Program completed with elapsed time: " << chrono::duration<double>(Full_timeEnd - Full_timeStart).count() << L" second(s)" << el;
     return 0;
 }
 
