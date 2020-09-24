@@ -119,7 +119,7 @@ def generateBounds():
         a = -a;
     #} 
     initialL = 0;
-    initialR = max(1, a+1);
+    initialR = max(1, a)+1;
 #}
 def computeOutput():
 #{
