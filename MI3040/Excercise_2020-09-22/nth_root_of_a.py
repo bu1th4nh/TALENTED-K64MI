@@ -8,7 +8,7 @@
 #===================================================================================
 # Libraries
 import math
-import sys
+#import sys
 
 
 
@@ -64,7 +64,7 @@ def internal___bisectionMethod(initialLeftBound, initialRightBound, epsilon, eva
         val = evaluate(mid, evalString);
 
 
-        print(left, mid, right, sep=',', file=sys.stderr)
+        #print(left, mid, right, sep=',', file=sys.stderr)
 
         
         if(val == 0): return mid;
@@ -74,7 +74,7 @@ def internal___bisectionMethod(initialLeftBound, initialRightBound, epsilon, eva
             left = mid;
     #}
     
-    print(left, mid, right, sep=',', file=sys.stderr)
+    #print(left, mid, right, sep=',', file=sys.stderr)
     return mid;
 #}
 
