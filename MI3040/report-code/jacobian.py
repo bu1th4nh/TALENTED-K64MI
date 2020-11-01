@@ -21,11 +21,6 @@ class jacobi_mat_inversion:
     #}
 
 
-    def __getNorm(self, __A, __domination_status): # Tính chuẩn
-    #{
-        if(__domination_status == 1): return self.__norm(__A, inf);
-        return self.__norm(__A, 1);
-    #}
     def __checkDomination(self, __A): # Kiểm tra tính chéo trội
     #{
         n = int(__A.shape[0]);
@@ -47,7 +42,12 @@ class jacobi_mat_inversion:
         if(col_dom == 1): return -1;
         return 0;
     #}
-    def __getLambda(self, __domination_status, __A): # Tính lambda
+    def __getNorm(self, __A, __domination_status): # Tính chuẩn
+    #{
+        if(__domination_status == 1): return self.__norm(__A, inf);
+        return self.__norm(__A, 1);
+    #}
+    def __getLambda(self, __A, __domination_status): # Tính lambda
     #{
         if(__domination_status == 1): return 1;
 
@@ -120,11 +120,11 @@ class jacobi_mat_inversion:
             return np.full((self.n, self.n), float("NaN"));
         #}
 
-        # Tính T, B, p, q
+        # Tính T, B, q, lambda
         T          = np.diag(1 / np.diag(A));
         B          = E - T @ A;
         q          = self.__getNorm(B, p);
-        var_lambda = self.__getLambda(p, A);
+        var_lambda = self.__getLambda(A, p);
 
 
         # Đưa ra ma trận cuối cùng
