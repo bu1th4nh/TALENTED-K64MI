@@ -12,6 +12,7 @@ from jacobian import *
 from newton import *
 
 n = 3;
+sor = 0;
 factor = 1.25;
 epsilon = 1e-14;
 
@@ -66,14 +67,16 @@ print(colored(C2, 'red'));
 print("--------------Kiểm tra ngược--------------");
 print(colored(A @ C2, 'blue'));
 print(f'Error: {np.linalg.norm(C2 - iA)}');
-print(f"=============== SOR Improvement Method with relaxation factor = {factor} ===============");
-D1 = ww.gauss_seidel_iteration(1, factor);
-print(colored(D1, 'red'));
-print("--------------Kiểm tra ngược--------------");
-print(colored(A @ D1, 'blue'));
-print(f'Error: {np.linalg.norm(D1 - iA)}');
-D2 = ww.gauss_seidel_iteration(2, factor);
-print(colored(D2, 'red'));
-print("--------------Kiểm tra ngược--------------");
-print(colored(A @ D2, 'blue'));
-print(f'Error: {np.linalg.norm(D2 - iA)}');
+
+if(sor == 1):
+    print(f"=============== SOR Improvement Method with relaxation factor = {factor} ===============");
+    D1 = ww.gauss_seidel_iteration(1, factor);
+    print(colored(D1, 'red'));
+    print("--------------Kiểm tra ngược--------------");
+    print(colored(A @ D1, 'blue'));
+    print(f'Error: {np.linalg.norm(D1 - iA)}');
+    D2 = ww.gauss_seidel_iteration(2, factor);
+    print(colored(D2, 'red'));
+    print("--------------Kiểm tra ngược--------------");
+    print(colored(A @ D2, 'blue'));
+    print(f'Error: {np.linalg.norm(D2 - iA)}');
