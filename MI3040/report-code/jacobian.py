@@ -38,6 +38,7 @@ class jacobi_mat_inversion:
             if(sum_col >= abs(__A[i, i])): col_dom = 0;
         #}
 
+
         if(row_dom == 1): return 1;
         if(col_dom == 1): return -1;
         return 0;
@@ -78,7 +79,7 @@ class jacobi_mat_inversion:
             qk *= q;
         #}
 
-        print(f"Predecessor Jacobi iteration method ended after {nr_iteration} iterations", file=sys.stderr);
+        print(f"Phương pháp Jacobi đánh giá tiên nghiệm kết thúc sau {nr_iteration} bước lặp", file=sys.stderr);
         return X;
     #}
     def __successor_iteration(self, X_0, B, T, q, lda, p): #SD công thức sai số hậu nghiệm
@@ -94,7 +95,7 @@ class jacobi_mat_inversion:
             new_X = B @ old_X + T;
         #}
 
-        print(f"Successor Jacobi iteration method ended after {nr_iteration} iterations", file=sys.stderr);
+        print(f"Phương pháp Jacobi đánh giá hậu nghiệm kết thúc sau {nr_iteration} bước lặp", file=sys.stderr);
         return new_X;
     #}
 
@@ -119,6 +120,9 @@ class jacobi_mat_inversion:
             print("A không chéo trội nên không đưa ra được ma trận nghịch đảo. Đề xuất: PP Newton");
             return np.full((self.n, self.n), float("NaN"));
         #}
+
+        if(p == 1): print("A chéo trội hàng", file=sys.stderr);
+        if(p == -1): print("A chéo trội cột", file=sys.stderr);
 
         # Tính T, B, q, lambda
         T          = np.diag(1 / np.diag(A));

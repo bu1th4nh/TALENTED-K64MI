@@ -40,7 +40,7 @@ class newton_mat_inversion:
         #{
             X = X @ (2 * E - A @ X);
             if(self.norm(E - A @ X) < 1): attempt += 1;
-            self.nr_iterations += 1 * bool(attempt <= newton_mat_inversion.max_attempt);
+            self.nr_iterations += 1 * bool(attempt == 0);
         #}
 
         # Trả về ma trận xấp xỉ đầu
@@ -77,7 +77,7 @@ class newton_mat_inversion:
         #}
 
         # Đưa ra ma trận cuối cùng
-        print(f"Newton iteration method ended after {self.nr_iterations} iterations", file=sys.stderr);
+        print(f"Phương pháp Newton kết thúc sau {self.nr_iterations} bước lặp", file=sys.stderr);
         return X;
     #}
 

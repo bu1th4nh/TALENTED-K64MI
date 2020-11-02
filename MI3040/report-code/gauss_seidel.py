@@ -108,6 +108,26 @@ class gaussseidel_mat_inversion:
         qk = 1;
 
         nr_iteration = 0;
+
+
+
+
+        # if(relax_factor == 1): 
+        #     while(qk * predecessor_norm > self.eps * (1 - q) * (1 - S)):
+        #     #{
+        #         nr_iteration += 1;
+        #         X   = self._________next_iteration(X, B, T, relax_factor);
+        #         qk *= q;
+        #     #}
+        # else: 
+        #     while(self.__norm(self.A @ X - np.eye(self.n)) > self.eps):
+        #     #{
+        #         nr_iteration += 1;
+        #         X   = self._________next_iteration(X, B, T, relax_factor);
+        #     #}
+
+
+
         while(qk * predecessor_norm > self.eps * (1 - q) * (1 - S)):
         #{
             nr_iteration += 1;
@@ -115,7 +135,8 @@ class gaussseidel_mat_inversion:
             qk *= q;
         #}
 
-        print(f"Predecessor Gauss-Seidel iteration method ended after {nr_iteration} iterations", file=sys.stderr);
+
+        print(f"Phương pháp Gauss-Seidel đánh giá tiên nghiệm kết thúc sau {nr_iteration} bước lặp", file=sys.stderr);
         return X;
     #}
     def __successor_iteration(self, X_0, B, T, S, q, p, relax_factor): #SD công thức sai số hậu nghiệm
@@ -124,14 +145,33 @@ class gaussseidel_mat_inversion:
         old_X = X_0;
 
         nr_iteration = 0;
+
+
+
+        # if(relax_factor == 1): 
+        #     while(q * self.__getNorm(new_X - old_X, p) > self.eps * (1 - q) * (1 - S)):
+        #     #{
+        #         nr_iteration += 1;
+        #         old_X = new_X;
+        #         new_X = self._________next_iteration(old_X, B, T, relax_factor);
+        #     #}
+        # else: 
+        #     while(self.__norm(self.A @ new_X - np.eye(self.n)) > self.eps):
+        #     #{
+        #         nr_iteration += 1;
+        #         new_X = self._________next_iteration(new_X, B, T, relax_factor);
+        #     #}
+
+
         while(q * self.__getNorm(new_X - old_X, p) > self.eps * (1 - q) * (1 - S)):
-        #{
+       #{
             nr_iteration += 1;
             old_X = new_X;
             new_X = self._________next_iteration(old_X, B, T, relax_factor);
         #}
 
-        print(f"Successor Gauss-Seidel iteration method ended after {nr_iteration} iterations", file=sys.stderr);
+
+        print(f"Phương pháp Gauss-Seidel đánh giá hậu nghiệm kết thúc sau {nr_iteration} bước lặp", file=sys.stderr);
         return new_X;
     #}
 
@@ -157,13 +197,16 @@ class gaussseidel_mat_inversion:
             return np.full((self.n, self.n), float("NaN"));
         #}
 
+        if(p == 1): print("A chéo trội hàng", file=sys.stderr);
+        if(p == -1): print("A chéo trội cột", file=sys.stderr);
+
         # Tính T, B, q, S
         T = np.diag(1 / np.diag(A));
         B = E - T @ A;
         S = self.__get_S_coeff(B, p);
         q = self.__get_q_coeff(B, p);
         
-        print(q, S, file=sys.stderr);
+        # print(q, S, file=sys.stderr);
 
         # Đưa ra ma trận cuối cùng
         if(mode == 1): return self.__predecessor_iteration(A, B, T, S, q, p, relax_factor);
