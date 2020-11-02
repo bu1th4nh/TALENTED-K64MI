@@ -11,21 +11,23 @@ from gauss_seidel import *
 from jacobian import *
 from newton import *
 
-n = 1000;
-factor = 1;
+n = 3;
+factor = 1.25;
 epsilon = 1e-14;
 
-A = np.random.rand(n,n)*1 + 1000 * np.eye(n);
-# A = np.reshape(np.loadtxt('input.txt'), (n, n));
+# A = np.random.rand(n,n)*1 + 1000 * np.eye(n);
+A = np.reshape(np.loadtxt('input.txt'), (n, n));
 
 
 print("=========================== welcome to The Matrix by bu1th4nh ===========================");
-print(colored("  ___.         ____  __  .__        _____        .__       ", 'red'));
-print(colored("  \_ |__  __ _/_   |/  |_|  |__    /  |  |  ____ |  |__    ", 'red'));
-print(colored("   | __ \|  |  \   \   __\  |  \  /   |  |_/    \|  |  \   ", 'red'));
-print(colored("   | \_\ \  |  /   ||  | |   Y  \/    ^   /   |  \   Y  \  ", 'red'));
-print(colored("   |___  /____/|___||__| |___|  /\____   ||___|  /___|  /  ", 'red'));
-print(colored("       \/                     \/      |__|     \/     \/   ", 'red'));
+print("   ");
+print(colored("                 ___.         ____  __  .__        _____        .__                      ", 'red'));
+print(colored("                 \_ |__  __ _/_   |/  |_|  |__    /  |  |  ____ |  |__                   ", 'red'));
+print(colored("                  | __ \|  |  \   \   __\  |  \  /   |  |_/    \|  |  \                  ", 'red'));
+print(colored("                  | \_\ \  |  /   ||  | |   Y  \/    ^   /   |  \   Y  \                 ", 'red'));
+print(colored("                  |___  /____/|___||__| |___|  /\____   ||___|  /___|  /                 ", 'red'));
+print(colored("                      \/                     \/      |__|     \/     \/                  ", 'red'));
+print("   ");
 
 
 iA = np.linalg.inv(A);
