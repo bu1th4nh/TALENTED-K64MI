@@ -1,0 +1,144 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{nummethod4}{book}{}
+      \name{author}{1}{}{%
+        {{hash=5a426ecc8e7c9fe6fd98b4cf4a894f3d}{%
+           family={J.\bibnamedelimi Douglas\bibnamedelima Faires},
+           familyi={J\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim F\bibinitperiod},
+           given={Richard\bibnamedelimb L.\bibnamedelimi Burden},
+           giveni={R\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Brooks / Cole, Cengage Learning}%
+      }
+      \strng{namehash}{5a426ecc8e7c9fe6fd98b4cf4a894f3d}
+      \strng{fullhash}{5a426ecc8e7c9fe6fd98b4cf4a894f3d}
+      \strng{bibnamehash}{5a426ecc8e7c9fe6fd98b4cf4a894f3d}
+      \strng{authorbibnamehash}{5a426ecc8e7c9fe6fd98b4cf4a894f3d}
+      \strng{authornamehash}{5a426ecc8e7c9fe6fd98b4cf4a894f3d}
+      \strng{authorfullhash}{5a426ecc8e7c9fe6fd98b4cf4a894f3d}
+      \field{sortinit}{J}
+      \field{sortinithash}{c45040a764d616897e7f5b30174d7b92}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Numerical Methods, 4th Edition}
+      \field{year}{2013, 2003, 1998}
+      \true{nocite}
+    \endentry
+    \entry{nummethodMATLAB}{book}{}
+      \name{author}{1}{}{%
+        {{hash=c5f2984afaa9ce359ebc6cd469dc9786}{%
+           family={Jaan\bibnamedelima Kiusalaas},
+           familyi={J\bibinitperiod\bibinitdelim K\bibinitperiod},
+           given={The\bibnamedelimb Pennsylvania\bibnamedelimb State\bibnamedelima University},
+           giveni={T\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim S\bibinitperiod\bibinitdelim U\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{c5f2984afaa9ce359ebc6cd469dc9786}
+      \strng{fullhash}{c5f2984afaa9ce359ebc6cd469dc9786}
+      \strng{bibnamehash}{c5f2984afaa9ce359ebc6cd469dc9786}
+      \strng{authorbibnamehash}{c5f2984afaa9ce359ebc6cd469dc9786}
+      \strng{authornamehash}{c5f2984afaa9ce359ebc6cd469dc9786}
+      \strng{authorfullhash}{c5f2984afaa9ce359ebc6cd469dc9786}
+      \field{sortinit}{J}
+      \field{sortinithash}{c45040a764d616897e7f5b30174d7b92}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Numerical Methods in Engineering With MATLAB}
+      \field{year}{2005}
+    \endentry
+    \entry{PanReif}{article}{}
+      \name{author}{1}{}{%
+        {{hash=29619940e60e79ee08d24e963e0f6da6}{%
+           family={Jr.},
+           familyi={J\bibinitperiod},
+           given={Thomas\bibnamedelimb E.\bibnamedelimi Phipps},
+           giveni={T\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{29619940e60e79ee08d24e963e0f6da6}
+      \strng{fullhash}{29619940e60e79ee08d24e963e0f6da6}
+      \strng{bibnamehash}{29619940e60e79ee08d24e963e0f6da6}
+      \strng{authorbibnamehash}{29619940e60e79ee08d24e963e0f6da6}
+      \strng{authornamehash}{29619940e60e79ee08d24e963e0f6da6}
+      \strng{authorfullhash}{29619940e60e79ee08d24e963e0f6da6}
+      \field{sortinit}{J}
+      \field{sortinithash}{c45040a764d616897e7f5b30174d7b92}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Byte Magazine}
+      \field{number}{04}
+      \field{title}{The inversion of large matrices: The Pan and Reif algorithm provides a solution}
+      \field{volume}{11}
+      \field{year}{04-1986}
+    \endentry
+    \entry{giaotrinhgiaitichso}{book}{}
+      \name{author}{1}{}{%
+        {{hash=25f237c8b031d30f0bead051336ff273}{%
+           family={Vinh},
+           familyi={V\bibinitperiod},
+           given={Lê\bibnamedelima Trọng},
+           giveni={L\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {NXB Khoa học và kỹ thuật}%
+      }
+      \strng{namehash}{25f237c8b031d30f0bead051336ff273}
+      \strng{fullhash}{25f237c8b031d30f0bead051336ff273}
+      \strng{bibnamehash}{25f237c8b031d30f0bead051336ff273}
+      \strng{authorbibnamehash}{25f237c8b031d30f0bead051336ff273}
+      \strng{authornamehash}{25f237c8b031d30f0bead051336ff273}
+      \strng{authorfullhash}{25f237c8b031d30f0bead051336ff273}
+      \field{sortinit}{V}
+      \field{sortinithash}{02432525618c08e2b03cac47c19764af}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Giáo trình Giải tích số}
+      \field{year}{2007}
+    \endentry
+    \entry{key}{book}{}
+      \name{author}{1}{}{%
+        {{hash=c5c5fb4584775c2cbe193f98e24ef51d}{%
+           family={Yến},
+           familyi={Y\bibinitperiod},
+           given={Hà\bibnamedelima Thị\bibnamedelima Ngọc},
+           giveni={H\bibinitperiod\bibinitdelim T\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \strng{namehash}{c5c5fb4584775c2cbe193f98e24ef51d}
+      \strng{fullhash}{c5c5fb4584775c2cbe193f98e24ef51d}
+      \strng{bibnamehash}{c5c5fb4584775c2cbe193f98e24ef51d}
+      \strng{authorbibnamehash}{c5c5fb4584775c2cbe193f98e24ef51d}
+      \strng{authornamehash}{c5c5fb4584775c2cbe193f98e24ef51d}
+      \strng{authorfullhash}{c5c5fb4584775c2cbe193f98e24ef51d}
+      \field{sortinit}{Y}
+      \field{sortinithash}{6ae2ff5458ff901249c2745238c951b7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Phương pháp lặp Jacobi}
+      \field{year}{2019}
+      \true{nocite}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

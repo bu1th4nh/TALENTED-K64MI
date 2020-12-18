@@ -1,0 +1,49 @@
+\section{Phân tích}
+\begin{frame}
+    \frametitle{Ưu, nhược điểm}
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            Phương pháp &
+              Newton &
+              Lặp Jacobi &
+              Lặp Gauss-Seidel \\ \hline
+            Ưu điểm &
+              \multicolumn{3}{c|}{\begin{tabular}[c]{@{}c@{}}Kiểm soát được sai số tính toán, sai số được cải thiện sau mỗi bước lặp\\ Tốc độ hội tụ nhanh trong một số trường hợp\end{tabular}} \\ \hline
+            Nhược điểm &
+              \begin{tabular}[c]{@{}c@{}}Khó tìm giá trị \\ xấp xỉ đầu $X_{0}$\end{tabular} &
+              \multicolumn{2}{c|}{Yêu cầu ma trận phải chéo trội} \\ \hline
+        \end{tabular}
+    \end{center}
+
+    $\longrightarrow$ Tìm giá trị xấp xỉ đầu cho $X_{0}$ trong phương pháp Newton?
+    \pause
+
+    \begin{itemize}
+        \item Đặt $ X_{0} = \frac{A}{\left\lVert A \right\rVert_{1}\left\lVert A \right\rVert_{\infty}} $ \cite{PanReif}
+        \item Sử dụng kết quả của các phương pháp tính trực tiếp ma trận nghịch đảo làm xấp xỉ đầu
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        {\Huge \textbf{Câu hỏi?}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Tài liệu tham khảo}
+
+    \nocite{*}
+    \printbibliography    
+
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \includegraphics[height = \textheight]{Ngan.png}
+    \end{center}
+\end{frame}
+

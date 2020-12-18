@@ -1,0 +1,109 @@
+\section{Phương pháp Newton}
+        
+    \subsection{Ý tưởng}
+        \par Giả sử cho số thực $a$ khác 0 , tìm $x$ để $ax = 1 \Rightarrow a = \frac{1}{x}$ với $a \neq 0$. Ta đặt:
+
+        $$ f(x) = a - \frac{1}{x} = 0 $$
+
+        \par Theo công thức Newton:
+
+        $$ x_{k+1} = x_{k} - \frac{f(x_{k})}{f'(x_{k})} = x_{k} - \frac{a - \frac{1}{x_{k}}}{\frac{1}{x_{k}^{2}}} $$
+
+        \par hay: 
+            
+        $$ x_{k+1} = x_{k}(2 - ax_{k}) \text{ với } k \in \mathbb{N} $$
+        
+    \subsection{Công thức lặp}
+        \par Vận dụng ý tưởng trên, xem $a$ là ma trận $A$, $x$ là ma trận $X$, cần tìm $X$ sao cho $ A X = X A = E $ ta có công thức lặp như sau:
+            
+        \begin{equation}
+            X_{k+1} = X_{k}(2E - AX_{k}) \text{  với  } k \in \mathbb{N} 
+        \end{equation}
+
+        \par ở đó $E$ là ma trận đơn vị cùng cấp và $X_{0}$ là xấp xỉ đầu
+
+    \subsection{Điều kiện hội tụ}
+        \par Ta cần tìm điều kiện để 
+        $$ \lim_{k \to \infty} X_{k} = A^{-1} $$
+        
+        \par Ta đặt $ G_{k} = E - AX_{k} $. Theo công thức $(1)$ ta được:
+        \begin{align*}
+            G_{k} &= E - AX_{k-1}(2E - AX_{k-1}) \\
+                  &= E - 2AX_{k-1} + (AX_{k-1})^{2} \\
+                  &= (E - AX_{k-1})^{2} = G_{k-1}^{2} 
+        \end{align*}
+        
+        \par Theo truy hồi ta có: $ G_{k} = G_{k-1}^{2} = (G_{k-2}^2)^2 = (G_{k-2})^4 = ...... = G_{0}^{2^{k}} $
+        
+        \par Mặt khác $A^{-1} - X_{k} = A^{-1}(E - AX_{k}) = A^{-1}G_{k} = A^{-1}G_0^{2^{k}}$ nên:
+        \begin{equation}
+            \left\lVert A^{-1} - X_{k} \right\rVert \leq \left\lVert A^{-1} \right\rVert \left\lVert G_{0} \right\rVert ^{2^{k}}
+        \end{equation}
+        \par ở đó $ G_{0} = E - AX_{0} $. Cũng từ $(2)$ ta thấy nếu $\left\lVert G_{0} \right\rVert < 1 $ thì:
+
+        $$ \left\lVert A^{-1} - X_{k} \right\rVert \xrightarrow{k \to \infty} 0 \text{  hay  } \lim_{k \to \infty} X_{k} = A^{-1}  $$
+
+        Vậy $\left\lVert G_{0} \right\rVert < 1$ là điều kiện để quá trình lặp $(1)$ hội tụ. Tuy nhiên, trên máy tính ta không thể cho k lặp đến vô cùng mà chỉ lặp đến một khoảng sai số nhất định nên vì vậy, cần phải xây dựng công thức sai số.
+
+    \subsection{Công thức sai số}
+        Giả sử $ \left\lVert G_{0} \right\rVert \leq q < 1 $. Ta lại có:
+        \begin{align*}
+            G_{0} = E - AX_{0} &\Leftrightarrow X_{0} = A^{-1}(E - G_{0}) \\
+                               &\Leftrightarrow A^{-1} = X_{0}(E - G_{0})^{-1} \\
+                               &\Leftrightarrow A^{-1} = X_{0}(E + G_{0} + G_{0}^{2} + .....) \\
+        \end{align*} 
+        \par Suy ra $ \Rightarrow \left\lVert A^{-1} \right\rVert \leq \left\lVert X_{0} \right\rVert (1 + q + q^{2} + ....) = \frac{\left\lVert X_{0} \right\rVert}{1 - q} $
+
+        \par Thay vào $(2)$ ta được:
+        $$ \left\lVert A^{-1} - X_{k} \right\rVert \leq \frac{\left\lVert X_{0} \right\rVert}{1 - q} \left\lVert G_{0} \right\rVert ^{2^{k}} = \frac{\left\lVert X_{0} \right\rVert}{1 - q} q^{2^{k}} $$
+
+        Từ đó ta có công thức đánh giá sai số như sau:
+        \begin{equation}
+            \left\lVert A^{-1} - X_{k} \right\rVert \leq \frac{\left\lVert X_{0} \right\rVert}{1 - q} q^{2^{k}} 
+        \end{equation}
+            
+    \subsection{Thuật toán và chương trình}
+        \subsubsection{Input, Output và chương trình:} 
+            \par \textbf{Input:} Ma trận $A$, xấp xỉ đầu $X_{0}$ và sai số $\varepsilon$. Giả thiết coi như các công thức ở \textbf{2.3} và \textbf{2.4} thỏa mãn
+            \par \textbf{Output:} Ma trận xấp xỉ $A^{-1}$
+            \par \textbf{Chương trình: }\href{https://github.com/Talented-K64MI/MI3040-Numerical-Analysis/tree/master/Topic%202.5%20-%20Matrix%20Inversion/Newton%20Method}{\texttt{newton.py}}
+
+
+        \subsubsection{Mã giả:}
+            \IncMargin{1em}\begin{algorithm}[H]
+                \caption{Phương pháp Newton tìm ma trận nghịch đảo \label{IR}}
+                \KwIn{Ma trận $A, X_{0}, \varepsilon$}
+                \KwOut{Ma trận $X^{*} = A^{-1}$ là ma trận nghịch đảo}
+                \SetAlgoLined     
+                \Begin{
+                    Nhập $A, X_{0}, \varepsilon$\;
+                    
+                    $ q \longleftarrow \left\lVert E - AX_{0} \right\rVert $\;
+                    $ k \longleftarrow 0 $\;
+                    $ X \longleftarrow X_{0}   $\;
+                    
+                    \While{$ \frac{\left\lVert X_{0} \right\rVert * q^{2^{k}} }{1 - q} > \varepsilon $}{    
+                        $ X \longleftarrow X(2E - AX) $\;
+                        $ k \longleftarrow k + 1 $\;
+                        }
+                        
+                    Đưa ra $X$ chính là ma trận nghịch đảo\;
+                }       
+            \end{algorithm}\DecMargin{1em}
+
+
+        \subsubsection{Giải thích biến trong thuật toán:}
+            \begin{itemize}
+                \item $A$: Ma trận cần nghịch đảo
+                \item $X_{0}$: Xấp xỉ đầu vào
+                \item $\varepsilon$: Sai số cho phép
+                \item $E$: Ma trận đơn vị cùng cấp với $A$
+                \item $X$: Dãy ma trận $X_{k}$, tuy nhiên chúng ta chỉ cần xét phần tử $X_{n-1}$ để tính $X_{k}$ nên chúng ta chỉ cần 1 ma trận $X$
+                \item $q$: Giá trị q trong công thức sai số
+            \end{itemize}
+
+        
+        
+
+
+

@@ -1,0 +1,116 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{vietnam} % Sử dụng tiếng việt
+\usepackage[top=2cm, bottom=2cm, left=3cm, right=2cm] {geometry} % Canh lề trang
+\usepackage{graphicx} % Cho phép chèn hỉnh ảnh
+\usepackage{fancybox} % Tạo khung box
+\usepackage{indentfirst} % Thụt đầu dòng ở dòng đầu tiên trong đoạn
+\usepackage{amsthm} % Cho phép thêm các môi trường định nghĩa
+\usepackage{latexsym} % Các kí hiệu toán học
+\usepackage{amsmath} % Hỗ trợ một số biểu thức toán học
+\usepackage{amssymb} % Bổ sung thêm kí hiệu về toán học
+\usepackage{amsbsy} % Hỗ trợ các kí hiệu in đậm
+\usepackage{array} % Tạo bảng array
+\usepackage{enumitem} % Cho phép thay đổi kí hiệu của list
+\usepackage{subfiles} % Chèn các file nhỏ, giúp chia các chapter ra nhiều file hơn
+\usepackage{titlesec} % Giúp chỉnh sửa các tiêu đề, đề mục như chương, phần,..
+\usepackage{chngcntr} % Dùng để thiết lập lại cách đánh số caption,..
+\usepackage{pdflscape} % Đưa các bảng có kích thước đặt theo chiều ngang giấy
+\usepackage{afterpage}
+\usepackage{capt-of} % Cho phép sử dụng caption lớn đối với landscape page
+\usepackage{multirow} % Merge cells
+\usepackage{fancyhdr} % Cho phép tùy biến header và footer
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage[boxruled, lined]{algorithm2e} % Thêm mã giả
+
+\usepackage{times}  % There's an impostor among us =)))
+
+%=======================================================
+\usepackage[pdftex, % Sử dụng PDF TeX
+bookmarks=true, % Tạo bookmarks trong tập tin PDF
+colorlinks=false, % Chữ có màu
+pdfencoding=auto, % Tự động điều chỉnh encoding của PDF
+unicode=true, % Sử dụng Unicode
+pdffitwindow=true, % Fit cho vừa cửa sổ
+pdfstartview={FitH}, % Zoom file PDF cho vừa khít với nội dung
+pdftoolbar=false, % Ẩn đi tool bar trong PDF viewer
+pdfmenubar=false % Ẩn đi menu bar trong PDF viewer
+]{hyperref}
+
+
+% Phụ lục 
+\usepackage[toc,page]{appendix} % Thêm phụ lục
+\renewcommand{\appendixname}{Phụ lục}
+\renewcommand{\appendixtocname}{Phụ lục}
+\renewcommand{\appendixpagename}{Phụ lục}
+
+% Tài liệu tham khảo
+\usepackage[backend=biber]{biblatex}
+\addbibresource{bibliography/report-bib.bib}
+\DefineBibliographyStrings{english}{%
+bibliography = {Tài liệu tham khảo},
+references = {Tài liệu tham khảo},
+}
+
+
+
+% Dãn cách dòng & đánh số phần
+\onehalfspacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{15pt}
+\renewcommand{\baselinestretch}{1.5}
+\renewcommand{\thesection}{\arabic{section}}
+
+
+% Tên và tác giả
+\def \TITLE{Các phương pháp tìm gần đúng ma trận nghịch đảo}
+\def \AUTHOR{\textbf{Bùi Tiến Thành - MSSV 20190081}  \\\textbf{Chu Thị Ngân - MSSV 20195904} \\}
+\date{Tháng Mười một, 2020}
+
+
+% Đầu trang và chân trang
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\rightmark}
+\rfoot{CTTN Toán tin K64 }
+\lfoot{Bùi Tiến Thành \texttt{(thanh.bt190081@sis.hust.edu.vn)} \\Chu Thị Ngân \texttt{(ngan.ct195904@sis.hust.edu.vn)}}
+\rhead{Trang \thepage}
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{2pt}
+
+
+% Hình vẽ
+\graphicspath{{./rpt-img/}}
+
+
+
+
+%=======================================================
+\begin{document}
+
+    \newgeometry{top=2cm, bottom=2cm, left=3cm, right=2cm}
+    \input{rpt-chapters/cover.tex}
+    \restoregeometry
+
+    \pagestyle{empty}
+    \newpage
+    \addcontentsline{toc}{section}{\protect\numberline{}Mục lục}
+    \tableofcontents
+    \newpage
+
+    \pagestyle{fancy}
+
+    \input{rpt-chapters/report-sect1.tex}
+    \input{rpt-chapters/report-sect2.tex}
+    \input{rpt-chapters/report-sect3.tex}
+    \input{rpt-chapters/report-sect4.tex}
+    \input{rpt-chapters/report-sect5.tex}
+    \input{rpt-chapters/appendix.tex}
+
+    \newpage
+    \pagestyle{plain}
+    \nocite{*} % Tùy chọn cho phép in tất cả danh mục tài liệu tham khảo, kể cả tài liệu không được tham chiếu
+    \printbibliography
+    \addcontentsline{toc}{section}{\protect\numberline{}Danh mục tài liệu tham khảo}
+
+\end{document}

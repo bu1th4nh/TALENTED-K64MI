@@ -1,0 +1,185 @@
+\section{Phương pháp lặp Gauss-Seidel}
+\subsection{Công thức lặp và điều kiện hội tụ }
+    \begin{frame}
+        \frametitle{Công thức lặp và điều kiện hội tụ}
+
+        Đặt $B = E - TA$ với $T = diag\{\frac{1}{A_{11}}, \frac{1}{A_{22}},..., \frac{1}{A_{nn}}\} $ tương tự phương pháp Jacobi
+        \begin{block}{Công thức lặp - Phương pháp Gauss-Seidel nguyên bản \cite{giaotrinhgiaitichso}}
+            $$ X_{i}^{(k+1)} = \sum\limits_{j=1}^{i-1} B_{ij}X_{j}^{(k+1)} + \sum\limits_{j=i+1}^{n} B_{ij}X_{j}^{(k)} + T_{i}$$
+            với mọi $i = \overline{1,n}$ và $A_{i}$ là dòng $i$ của ma trận $A$
+        \end{block}
+
+        \begin{block}{Mở rộng: Hệ số điều chỉnh cho phương pháp Gauss-Seidel \cite{nummethod4}}
+            $$ X_{i}^{k+1} = (1 - \omega)X_{i}^{k} + \omega\left[ \sum\limits_{j=1}^{i-1} B_{ij}X_{j}^{(k+1)} + \sum\limits_{j=i+1}^{n} B_{ij}X_{j}^{(k)} + T_{i}\right] $$
+
+            với $\omega$ là hệ số điều chỉnh (relaxation factor)
+        \end{block}
+
+        \par \textbf{Điều kiện hội tụ:} Tương tự phương pháp \textbf{Jacobi}, tức là $A$ phải chéo trội.
+        
+    \end{frame}
+
+\subsection{Công thức sai số}
+    \begin{frame}
+        \frametitle{Trường hợp chéo trội hàng}
+        Cho: 
+        $$ q = \max\limits_{1 \leq i \leq n} \frac{\sum\limits_{j=i}^{n} \left\lvert B_{ij} \right\rvert}{1 - \sum\limits_{j=1}^{i-1} \left\lvert B_{ij} \right\rvert} \leq \left\lVert B \right\rVert_{\infty} < 1 $$
+        
+        \begin{block}{Công thức sai số \cite{giaotrinhgiaitichso}}
+            $$ \left\lVert X_{k} - X^{*} \right\rVert_{\infty} \leq \frac{q}{1 - q} \left\lVert X_{k} - X_{k - 1} \right\rVert_{\infty}  $$
+            $$ \left\lVert X_{k} - X^{*} \right\rVert_{\infty} \leq \frac{q^{k}}{1 - q} \left\lVert X_{1} - X_{0} \right\rVert_{\infty}  $$
+        \end{block}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Trường hợp chéo trội cột}
+        Cho: 
+        $$ q = \max\limits_{1 \leq i \leq n} \frac{\sum\limits_{j=1}^{i} \left\lvert B_{ji} \right\rvert}{1 - \sum\limits_{j=i+1}^{n} \left\lvert B_{ji} \right\rvert} \leq \left\lVert B \right\rVert_{1} < 1 $$ 
+        $$ S = \max\limits_{1 \leq i \leq n} \sum\limits_{j=i+1}^{n} \left\lvert B_{ji} \right\rvert $$
+        
+        \begin{block}{Công thức sai số\cite{giaotrinhgiaitichso}}
+            $$ \left\lVert X_{k} - X^{*} \right\rVert_{1} \leq \frac{q}{(1 - S)(1 - q)} \left\lVert X_{k} - X_{k - 1} \right\rVert_{1}  $$
+            $$ \left\lVert X_{k} - X^{*} \right\rVert_{1} \leq \frac{q^{k}}{(1 - S)(1 - q)} \left\lVert X_{1} - X_{0} \right\rVert_{1}  $$
+        \end{block}
+    \end{frame}
+
+\subsection{Thuật toán và chương trình}
+    \begin{frame}[fragile, label = gauss_seidel.algo]  
+        \frametitle{Thuật toán chính}
+        \IncMargin{1em}\begin{algorithm}[H]
+            \caption{Phương pháp Gauss-Seidel tìm ma trận nghịch đảo \label{IR}}
+            \KwIn{Ma trận $A$ chéo trội, sai số $\varepsilon$, hệ số điều chỉnh $\omega$}
+            \KwOut{Ma trận $X^{*} = A^{-1}$ là ma trận nghịch đảo}
+            \SetAlgoLined   
+            \Begin{
+                Nhập $A, \varepsilon$\;
+                \BlankLine
+                $ p \longleftarrow $ \hyperlink{jacobi.checkDom}{checkDomination}$(A) $\;
+                $ T \longleftarrow diag\{ \frac{1}{A_{11}}, \frac{1}{A_{22}}, ..., \frac{1}{A_{nn}} \} $\;
+                $ B \longleftarrow E - TA $\;
+                $ S \longleftarrow $ \hyperlink{gauss_seidel.get_S_coeff}{getSCoeff}$(B, p) $\;
+                $ q \longleftarrow $ \hyperlink{gauss_seidel.get_q_coeff}{getqCoeff}$(B, p) $\;
+                \BlankLine
+                $ X^{*} \longleftarrow $ \hyperlink{gauss_seidel.iterate}{iterate}$(X_0 \leftarrow A, B, T, S, q, p, \omega, \varepsilon) $\;
+                Trả về $X^{*}$ là ma trận nghịch đảo\;
+            }         
+        \end{algorithm}\DecMargin{1em}
+        \hyperlink{gauss_seidel.code}{\textcolor{blue}{Chuyển sang phần code}}
+    \end{frame}
+
+    
+    \begin{frame}[fragile, label = gauss_seidel.get_S_coeff]
+        \IncMargin{1em}\begin{function}[H]
+            \caption{getSCoeff(A, p)}
+            \KwIn{Ma trận $A$, giá trị kiểm tra $p$}
+            \KwOut{ $ S = 0 $ nếu $p = 1$, $\max\limits_{1 \leq i \leq n} \sum\limits_{j=i+1}^{n} \left\lvert A_{ji} \right\rvert $ nếu $p = -1$}
+            \Begin{
+                \lIf{$ p = 1 $}{\KwRet{0}}
+                \BlankLine
+                $S \longleftarrow 0$\;
+                \lFor{$i=1$ \KwTo n}{$ S \longleftarrow max(S, \sum\limits_{j=i+1}^{n} \left\lvert A_{ji} \right\rvert) $}
+                \KwRet{$S$}
+            }
+        \end{function}\DecMargin{1em}
+
+        \hyperlink{gauss_seidel.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+    \end{frame}
+    \begin{frame}[fragile, label = gauss_seidel.get_q_coeff]
+        \IncMargin{1em}\begin{function}[H]
+            \caption{getqCoeff(A, p)}
+            \KwIn{Ma trận $A$, giá trị kiểm tra $p$}
+            \KwOut{ $ q = \max\limits_{1 \leq i \leq n} \frac{\sum\limits_{j=i}^{n} \left\lvert A_{ij} \right\rvert}{1 - \sum\limits_{j=1}^{i-1} \left\lvert A_{ij} \right\rvert} $ nếu $p = 1$, $ \max\limits_{1 \leq i \leq n} \frac{\sum\limits_{j=1}^{i} \left\lvert A_{ji} \right\rvert}{1 - \sum\limits_{j=i+1}^{n} \left\lvert A_{ji} \right\rvert} $ nếu $p = -1$}
+            \Begin{
+                $q \longleftarrow 0$\;
+                \For{$i=1$ \KwTo n}{
+                    $ Q1 \longleftarrow 0, Q2 \longleftarrow 0 $\;
+                    \lIf{$ p = 1 $}{$ Q1 \longleftarrow \sum\limits_{j=i}^{n} \left\lvert A_{ij} \right\rvert, Q2 \longleftarrow \sum\limits_{j=1}^{i-1} \left\lvert A_{ij} \right\rvert $}
+                    \lElse{$ Q1 \longleftarrow \sum\limits_{j=1}^{i} \left\lvert A_{ji} \right\rvert, Q2 \longleftarrow \sum\limits_{j=i+1}^{n} \left\lvert A_{ji} \right\rvert $}
+                    $ q \longleftarrow max(q, \frac{Q1}{1 - Q2}) $\;
+                }
+                \KwRet{$q$}
+            }
+        \end{function}\DecMargin{1em}
+
+        \hyperlink{gauss_seidel.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+    \end{frame}
+    \begin{frame}[fragile, label = gauss_seidel.iterate]
+        \frametitle{Lặp - Đánh giá tiên nghiệm}
+        
+        \IncMargin{1em}\begin{function}[H]
+            \caption{iterate($X_0$, B, T, S, q, p, $\omega, \varepsilon$)}
+            \KwIn{Ma trận xấp xỉ đầu $X_{0}$, $B$, $T$, hệ số $S$, $q$, giá trị kiểm tra $p$, hệ số điều chỉnh $\omega$ và sai số $\varepsilon$}
+            \KwOut{$X^{*}$ là ma trận nghịch đảo theo đánh giá tiên nghiệm}
+            \Begin{
+                $ qk \longleftarrow 1 $\; 
+                $ X \longleftarrow X_{0} $\;
+                $ X_{1} \longleftarrow \text{\hyperlink{gauss_seidel.next_iteration}{nextIteration}}(X_{0}, B, T, \omega) $\;
+                $ predecessor\_norm \longleftarrow getNorm(X_{1} - X_{0}, p) $\;
+                \BlankLine
+                \While{$ \frac{qk * predecessor\_norm}{(1 - q)*(1 - S)} > \varepsilon $}{
+                    $ X \longleftarrow \text{\hyperlink{gauss_seidel.next_iteration}{nextIteration}}(X, B, T, \omega) $ \;
+                    $ qk \longleftarrow qk * q $ \;
+                }
+                \BlankLine
+                \KwRet{X}
+            }
+        \end{function}\DecMargin{1em}
+    
+        \hyperlink{gauss_seidel.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+    \end{frame}
+    \begin{frame}[fragile]
+        \frametitle{Lặp - Đánh giá hậu nghiệm}
+
+        \IncMargin{1em}\begin{function}[H]
+            \caption{iterate($X_0$, B, T, S, q, p, $\omega, \varepsilon$)}
+            \KwIn{Ma trận xấp xỉ đầu $X_{0}$, $B$, $T$, hệ số $S$, $q$, giá trị kiểm tra $p$, hệ số điều chỉnh $\omega$ và sai số $\varepsilon$}
+            \KwOut{$X^{*}$ là ma trận nghịch đảo theo đánh giá hậu nghiệm}
+            \Begin{
+                $old\_X \longleftarrow X_{0} $\;
+                $new\_X \longleftarrow \text{\hyperlink{gauss_seidel.next_iteration}{nextIteration}}(X_{0}, B, T, \omega) $\;
+
+                \BlankLine
+                \While{$ \frac{\lambda * q * \text{\hyperlink{jacobi.getNorm}{getNorm}}(new\_X - old\_X, p)}{1 - q} > \varepsilon $}{
+                    $ old\_X \longleftarrow new\_X $\;
+                    $ new\_X \longleftarrow \text{\hyperlink{gauss_seidel.next_iteration}{nextIteration}}(X, B, T, \omega) $\;
+                }
+                \BlankLine
+
+                \KwRet{$new\_X$}
+            }
+        \end{function}\DecMargin{1em}
+
+        \hyperlink{jacobi.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+    \end{frame}
+    \begin{frame}[fragile, label = gauss_seidel.next_iteration]
+        \IncMargin{1em}\begin{function}[H]
+            \caption{nextIteration($old\_X, B, T, \omega$)}
+            \KwIn{Ma trận $old\_X, B, T$, và hệ số $\omega$}
+            \KwOut{Đưa ra ma trận tiếp theo thu được từ ma trận ban đầu $old\_X$ theo công thức lặp Gauss-Seidel}
+            \Begin{
+                $ new\_X \longleftarrow $ Ma trận không cấp $n$\;
+                \For{$i=1$ \KwTo n}{
+                    $ new\_X_{i} = \sum\limits_{j=1}^{i-1} B_{ij} * new\_X_{j} + \sum\limits_{j=i+1}^{n} B_{ij} * old\_X_{j} + T_{i} $\;
+                }
+                \KwRet{$(1 - \omega) * old\_X + \omega * new\_X$}
+            }
+        \end{function}\DecMargin{1em}
+
+        \hyperlink{gauss_seidel.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+
+        \hyperlink{gauss_seidel.iterate}{\textcolor{red}{Trở về tiến trình lặp}}
+    \end{frame}
+
+
+
+    \begin{frame}[label = gauss_seidel.code]
+        \frametitle{Chương trình}
+        \begin{center}
+            \includegraphics[scale = 0.4]{gausseidel-code-qr.png}
+
+            \url{https://github.com/bu1th4nh/TALENTED-K64MI/blob/master/MI3040/report-code/gauss_seidel.py}
+        \end{center}
+        
+    
+    \end{frame}
+

@@ -1,0 +1,24 @@
+\section{Giới thiệu các phương pháp tìm nghịch đảo ma trận chéo trội}
+    \subsection{Ý tưởng chung}
+    \begin{frame}
+        \frametitle{Ý tưởng chung}
+
+        \begin{block}{Ý tưởng}
+            Đưa phương trình $AX = E$ về dạng công thức lặp sau:
+            $$ X_{k+1} = BX_{k} + D $$ 
+        \end{block}
+
+        Ta cũng chứng minh được nếu $ \left\lVert B \right\rVert < 1 $ thì với giá trị xấp xỉ đầu bất kì thì $X$ luôn hội tụ về nghiệm (Phương pháp lặp đơn).
+
+        $\longrightarrow$ Vậy làm thế nào để $ \left\lVert B \right\rVert < 1 $?
+    \end{frame}
+
+    \subsection{Các phương pháp} 
+    \begin{frame}
+        \frametitle{Các phương pháp được lựa chọn}
+        
+        \begin{itemize}
+            \item Phương pháp lặp Jacobi (dựa trên phương pháp lặp đơn)
+            \item Phương pháp lặp Gauss - Seidel (dựa trên phương pháp lặp Siedel)
+        \end{itemize} 
+    \end{frame}

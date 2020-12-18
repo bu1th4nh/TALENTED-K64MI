@@ -1,0 +1,73 @@
+\section{Phương pháp Newton}
+\subsection{Ý tưởng và công thức lặp}
+    \begin{frame}{Ý tưởng và công thức lặp}
+
+        \begin{block}{Ý tưởng}
+            Từ phương pháp Newton cho $ax = 1$:
+            $$ x_{n+1} = x_{n} * (2 - ax_{n}) \text{ với } n \in \mathbb{N} $$
+        \end{block}
+
+        Áp dụng vào ma trận với E là ma trận đơn vị cùng cấp:
+        \begin{block}{Công thức lặp}
+            $$ X_{k+1} = X_{k}(2E - AX_{k}) \text{ với } k \in \mathbb{N} $$
+        \end{block}
+
+    \end{frame}
+
+\subsection{Điều kiện hội tụ và công thức sai số}
+
+    \begin{frame}
+        \frametitle{Điều kiện hội tụ và công thức sai số}
+        
+        \begin{block}{Điều kiện hội tụ}
+            $$ \left\lVert A^{-1} - X_{k} \right\rVert \leq \left\lVert A^{-1} \right\rVert \left\lVert E - AX_{0} \right\rVert ^{2^{k}} \xrightarrow{k \to \infty} 0 \text{ nếu }  \left\lVert E - AX_{0} \right\rVert < 1 $$
+        \end{block}
+
+        \begin{block}{Công thức sai số}
+            Khi $\left\lVert E - AX_{0} \right\rVert \leq q < 1$: 
+
+            $$ \left\lVert A^{-1} - X_{k} \right\rVert \leq \frac{\left\lVert X_{0} \right\rVert}{1 - q} q^{2^{k}}  $$
+        \end{block}
+    
+    \end{frame}
+
+    \subsection{Thuật toán và chương trình}
+    \begin{frame}
+        \frametitle{Input, output}
+        \begin{itemize}
+            \item Input: Ma trận $A$, xấp xỉ đầu $X_{0}$ và sai số $\varepsilon$. Giả thiết coi như các điều kiện hội tụ thỏa mãn.
+            \item Output: Ma trận xấp xỉ $A^{-1}$
+            \item Code:
+            \begin{center}
+                \includegraphics[scale = 0.4]{newton-code-qr.png}
+
+                \url{https://github.com/bu1th4nh/TALENTED-K64MI/blob/master/MI3040/report-code/newton.py}
+            \end{center}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[fragile]  
+        \frametitle{Mã giả}
+
+        \IncMargin{1em}\begin{algorithm}[H]
+            \caption{Phương pháp Newton tìm ma trận nghịch đảo \label{IR}}
+            \KwIn{Ma trận $A, X_{0}, \varepsilon$}
+            \KwOut{Ma trận $X^{*} = A^{-1}$ là ma trận nghịch đảo}
+            \SetAlgoLined            
+            \Begin{
+                Nhập $A, X_{0}, \varepsilon$\;
+                \BlankLine
+                $ q \longleftarrow \left\lVert E - AX_{0} \right\rVert $\;
+                $ q2k \longleftarrow q $\;
+                $ X \longleftarrow X_{0}   $\;
+                \BlankLine
+                \While{$ \frac{\left\lVert X_{0} \right\rVert * q2k }{1 - q} > \varepsilon $}{    
+                    $ X \longleftarrow X(2E - AX) $\;
+                    $ q2k \longleftarrow q2k^{2} $\;
+                }
+                \BlankLine
+                Đưa ra $X$ chính là ma trận nghịch đảo\;
+            }
+        \end{algorithm}\DecMargin{1em}
+    \end{frame}
+

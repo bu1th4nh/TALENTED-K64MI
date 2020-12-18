@@ -1,0 +1,55 @@
+\section{Phân tích và tổng kết các phương pháp}
+\subsection{Ưu, nhược điểm của các phương pháp}
+    
+    \subsubsection{Ưu điểm chung}
+        \begin{itemize}
+            \item So với các phương pháp giải đúng, các phương pháp xấp xỉ có tính chất "self-correcting"\cite{nummethodMATLAB} - tự sửa lỗi, tức là sai số tính toán được sửa lại sau mỗi bước lặp.
+            
+            \item Trong một vài trường hợp, các phương pháp này hội tụ rất nhanh và có thời gian chạy nhanh hơn hẳn các phương pháp giải đúng.
+        \end{itemize}
+
+    \subsubsection{Phương pháp Newton}
+        \par \textbf{Ưu điểm:}
+        \begin{itemize}
+            \item Tốc độ hội tụ rất nhanh khi xấp xỉ đầu thỏa mãn.
+            \item Dễ cài đặt, thuật toán đơn giản, dẽ nhớ.
+        \end{itemize}
+
+        \par \textbf{Nhược điểm:} Rất khó tìm xấp xỉ đầu cho phương pháp này do yêu cầu của hệ số co q.
+
+    \subsubsection{Phương pháp lặp Jacobi và lặp Gauss-Seidel}
+        \par \textbf{Ưu điểm:}
+        \begin{itemize}
+            \item Có thể chọn xấp xỉ đầu bất kỳ
+            \item Xấp xỉ đầu ảnh hưởng lớn đến hệ số co nên ta có thể điều chỉnh tốc độ hội tụ bằng xấp xỉ đầu.
+        \end{itemize}
+        
+        \par \textbf{Nhược điểm:}
+        \begin{itemize}
+            \item Yêu cầu ma trận phải chéo trội.
+            \item Thuật toán phức tạp, ít dùng trong thực tế khi lấy nghịch đảo ma trận.
+        \end{itemize}
+
+\subsection{Chọn xấp xỉ đầu cho các phương pháp}
+
+    Trong báo cáo này, nhóm đề xuất 2 cách chọn xấp xỉ đầu cho các phương pháp nêu trên như sau:
+
+    \begin{itemize}
+        \item \textbf{Sử dụng kết quả của các phương pháp giải đúng:} Do tính self-correcting của các phương pháp giải gần đúng, chúng ta có thể "chữa lại" kết quả của các phương pháp giải đúng như Gauss-Jordan, Cholesky,... bằng cách lấy kết quả của các phương pháp giải đúng làm đầu vào và xấp xỉ đầu cho các phương pháp giải gần đúng để cải thiện độ chính xác về tính toán cho các phương pháp giải đúng. Cách chọn xấp xỉ đầu này phù hợp với cả ba phương pháp Newton, Gauss-Seidel và Jacobi.
+        
+        \item \textbf{Một cách chọn xấp xỉ đầu cho phương pháp Newton:} Năm 1986, Victor Pan cùng với John H. Reif \cite{PanReif} đề xuất một phương pháp xấp xỉ đầu vào cho phương pháp Newton. Theo đó, ma trận xấp xỉ ban đầu sẽ được tính từ ma trận đề bài $A$ như sau:
+        $$ X_{0} = \frac{A^{T}}{\left\lVert A \right\rVert_{1}\left\lVert A \right\rVert_{\infty}} $$
+        Khi đó, phương pháp Newton hội tụ.
+    \end{itemize} 
+
+\subsection{Ứng dụng}
+
+    Nghịch đảo ma trận có rất nhiều ứng dụng trong thực tế. Chẳng hạn, có thể kể đến các ứng dụng như sau
+    \begin{itemize}
+        \item \textbf{Đồ họa máy tính:} Theo dõi một đối tượng trong không gian 3 chiều, có ứng dụng rất lớn trong ngành công nghiệp trò chơi điện tử, VFX và các ứng dụng VR,AR.
+        \item \textbf{Kỹ thuật điện, điện tử:} Giải các hệ thống mạch điện
+        \item \textbf{An toàn thông tin:} Mã hóa, giải mã thông tin
+    \end{itemize}
+
+    Đặc biệt, phương pháp Newton còn có thể sử dụng để tìm nghiệm của phương trình ma trận với ma trận hệ số không chéo trội - nhược điểm của các phương pháp lặp Jacobi, Gauss-Seidel để giải phương trình ma trận $AX = B$.
+    

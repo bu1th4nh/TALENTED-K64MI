@@ -1,0 +1,39 @@
+\section{Đặt vấn đề}
+    \subsection{Phái biểu bài toán}
+        \par \textbf{Bài toán: } Cho ma trận $A$ vuông cấp n, khả nghịch. Tìm ma trận nghịch đảo của $A$.
+
+        \par Trong báo cáo này, nhóm sẽ nghiên cứu các phương pháp giải gần đúng nghịch đảo của ma trận trên ma trận thực vuông cấp $n$, khả nghịch. Nói cách khác, ta có ma trận $ A $ thỏa mãn các tính chất sau:
+
+        $$ A \in \mathbf{M}_{n*n} (\mathbb{R}) \text{  và  } det(A) \neq 0 $$ 
+
+        \par ở đó $ \mathbf{M}_{n*n} (\mathbb{R}) $ là tập các ma trận vuông cấp n trên tập số thực.
+            
+    \subsection{Tại sao phải giải gần đúng?}
+        \par Các phương pháp giải chính xác thường cho ra lời giải sau hữu hạn bước và thậm chí cho lời giải chính xác nếu máy tính có thể xử lý số thực với cấp chính xác là vô cùng. Tuy nhiên, các phương pháp này gặp khó khăn với những ma trận có kích thước rất lớn và có nhiều phần tử không (hay còn gọi là ma trận thưa) và do hạn chế của tính toán số trên máy tính, các phương pháp giải đúng có thể sinh ra sai số rất lớn. Hơn nữa, độ phức tạp cúa các phương pháp tìm chính xác ma trận nghịch đảo là $\mathcal{O} (n^{3})$ và khối lượng tính toán sẽ tăng rất nhanh khi tăng kích cỡ ma trận. Do đó, phương pháp xấp xỉ được phát minh để phần nào giải quyết những vấn đề mà phương pháp chính xác gặp phải. 
+            
+    \subsection{Các phương pháp giải}
+        \par Ta thấy đây là một trường hợp riêng của bài toán giải phương trình $ A X = B $, trong đó $B = E $ là ma trận đơn vị cấp $n$, do đó có thể áp dụng các phương pháp giải gần đúng phương trình ma trận vào bài toán này. Ngoài ra, nhóm còn đề cập thêm một phương pháp riêng là phương pháp Newton để tìm gần đúng ma trận nghịch đảo.
+
+        \begin{enumerate}[label = (\roman*)]
+            \item Phương pháp Newton
+            \item Phương pháp lặp đơn và lặp Jacobi
+            \item Phương pháp lặp Gauss-Seidel
+        \end{enumerate}
+
+    \subsection{Chuẩn ma trận và sự hội tụ của dãy ma trận}
+        \par Điểm chung của các phương pháp này là đều xuất phát từ một xấp xỉ ban đầu $X^{(0)}$, tìm cách hiệu chỉnh dần sau một số bước ta thu được dãy  $ \{ X^{(k)} \} $ mà $ \{ X^{(k)} \} $ tiến gần đến $A^{-1}$. Do đó, cần đưa vào khái niệm về chuẩn và sự hội tụ của dãy ma trận
+            
+        \par \textbf{Về chuẩn của ma trận:} Trong báo cáo này, nhóm sẽ sử dụng một số chuẩn thông dụng để xác định sai số và độ hội tụ của các phương pháp. Các chuẩn đó là chuẩn Euclid (chuẩn 2), chuẩn cột (chuẩn 1) và chuẩn hàng (chuẩn vô cùng) và chúng được định nghĩa như sau:
+        
+        $$ \left\lVert A \right\rVert_{2} = \sqrt{ \sum\limits_{1}^{n} \sum\limits_{1}^{n} \left\lvert A_{ij} \right\rvert^{2}  }   $$
+        $$ \left\lVert A \right\rVert_{1} = \max\limits_{1 \leq j \leq n} \sum\limits_{i = 1}^{n} \left\lvert A_{ij} \right\rvert    $$
+        $$ \left\lVert A \right\rVert_{\infty} =  \max\limits_{1 \leq i \leq n} \sum\limits_{j = 1}^{n} \left\lvert A_{ij} \right\rvert $$
+
+        Dễ thấy các "chuẩn" này là một chuẩn trên $ \mathbf{M}_{n*n} (\mathbb{R}) $ và thỏa mãn các tiên đề của chuẩn \textit{(bạn đọc tự chứng minh như một câu hỏi)}
+
+        \par \textbf{Sự hội tụ của dãy ma trận:} Từ chuẩn của ma trận, ta xây dựng định nghĩa về sự hội tụ của dãy ma trận như sau: Dãy ma trận $ \{ A^{(k)} \} \subset \mathbf{M}_{n*n} (\mathbb{R}) $ hội tụ về ma trận $ A $, hay $ \lim_{k \to \infty} A^{(k)} = A $ nếu:
+
+        $$ \lim_{k \to \infty} \left\lVert A^{(k)} - A \right\rVert = 0 $$
+
+
+    

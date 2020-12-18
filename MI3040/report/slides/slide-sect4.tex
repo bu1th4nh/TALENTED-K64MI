@@ -1,0 +1,168 @@
+\section{Phương pháp lặp Jacobi}
+\subsection{Công thức lặp và điều kiện hội tụ }
+    \begin{frame}
+        \frametitle{Công thức lặp và điều kiện hội tụ}
+
+        Đặt: $ T = diag\{\frac{1}{A_{11}}, \frac{1}{A_{22}},..., \frac{1}{A_{nn}}\} $ là ma trận đường chéo cấp n, ta có:
+    
+        \begin{block}{Công thức lặp}
+            $$ X_{k+1} = (E - TA)X_{k} + T $$
+        \end{block}
+        
+        \begin{block}{Điều kiện hội tụ}
+            Để $ \left\lVert E - TA \right\rVert < 1 $ thì ma trận A phải chéo trội, nghĩa là:
+            $$\sum\limits_{j = 1, j \neq i}^{n} \left\lvert A_{ij} \right\rvert < \left\lvert A_{ii}\right\rvert \; \forall i = \overline{1,n} \text{ chéo trội hàng} $$
+            $$\text{ hoặc }  \sum\limits_{i = 1, i \neq j}^{n} \left\lvert A_{ij} \right\rvert < \left\lvert A_{jj}\right\rvert \; \forall j = \overline{1,n} \text{ chéo trội cột}$$
+        \end{block}
+    \end{frame}
+
+\subsection{Công thức sai số}
+    \begin{frame}
+        \frametitle{Công thức sai số}
+        
+        Cho $B = E - TA, B_{1} = E - AT$
+        \begin{block}{Trường hợp chéo trội hàng: Với $\left\lVert B\right\rVert _{\infty} \leq q < 1$}
+            $$ \left\lVert X_{k} - X^{*} \right\rVert_{\infty} \leq \frac{q}{1 - q} \left\lVert X_{k} - X_{k - 1} \right\rVert_{\infty}  $$
+            $$ \left\lVert X_{k} - X^{*} \right\rVert_{\infty} \leq \frac{q^{k}}{1 - q} \left\lVert X_{1} - X_{0} \right\rVert_{\infty}  $$
+        \end{block}
+        \begin{block}{Trường hợp chéo trội cột: Cho $\lambda = \frac{max \left\lvert A_{ii}\right\rvert }{min \left\lvert A_{ii}\right\rvert }, \left\lVert B_{1}\right\rVert _{1} \leq q < 1 $}
+            $$ \left\lVert X_{k} - X^{*} \right\rVert_{1} \leq \lambda \frac{q}{1 - q} \left\lVert X_{k} - X_{k - 1} \right\rVert_{1}  $$
+            $$ \left\lVert X_{k} - X^{*} \right\rVert_{1} \leq \lambda \frac{q^{k}}{1 - q} \left\lVert X_{1} - X_{0} \right\rVert_{1}  $$
+        \end{block}
+    \end{frame}
+
+\subsection{Thuật toán và chương trình}
+    \begin{frame}[fragile, label = jacobi.algo]  
+        \frametitle{Thuật toán chính}
+        \IncMargin{1em}\begin{algorithm}[H]
+            \caption{Phương pháp Jacobi tìm ma trận nghịch đảo \label{IR}}
+            \KwIn{Ma trận $A$ chéo trội, sai số $\varepsilon$}
+            \KwOut{Ma trận $X^{*} = A^{-1}$ là ma trận nghịch đảo}
+            \SetAlgoLined   
+            \Begin{
+                Nhập $A, \varepsilon$\;
+                \BlankLine
+                $ p \longleftarrow $ \hyperlink{jacobi.checkDom}{checkDomination}$(A) $\;
+                $ T \longleftarrow diag\{ \frac{1}{A_{11}}, \frac{1}{A_{22}}, ..., \frac{1}{A_{nn}} \} $\;
+                $ B \longleftarrow E - TA, B_{1} \longleftarrow E - AT$\;
+                $ q \longleftarrow $ \hyperlink{jacobi.getNorm}{getNorm}$(B,B_{1}, p) $\;
+                $ \lambda \longleftarrow $ \hyperlink{jacobi.getNorm}{getLambda}$(A, p) $\;
+                \BlankLine
+                $ X^{*} \longleftarrow $ \hyperlink{jacobi.iterate}{iterate}$(X_0 \leftarrow A, B, T, q, \lambda, p, \varepsilon) $\;
+                Trả về $X^{*}$ là ma trận nghịch đảo\;
+            }         
+        \end{algorithm}\DecMargin{1em}
+        \hyperlink{jacobi.code}{\textcolor{blue}{Chuyển sang phần code}}
+    \end{frame}
+
+    
+
+    \begin{frame}[fragile, label = jacobi.checkDom]
+        \IncMargin{1em}\begin{function}[H]
+            \caption{checkDomination(A)}
+            \KwIn{Ma trận $A$}
+            \KwOut{Giá trị kiểm tra $p$ bằng 1 nếu $A$ chéo trội hàng, -1 nếu $A$ chéo trội cột, 0 khi $A$ không chéo trội}
+            \Begin{
+                $ row\_dom \longleftarrow 1 $, $ col\_dom \longleftarrow 1 $ \;
+                \For{$i=1$ \KwTo n}{
+                    \lIf{ $ \sum\limits_{j = 1, j \neq i}^{n} \left\lvert A_{ij} \right\rvert >= \left\lvert A_{ii}\right\rvert $ }{ $ row\_dom \longleftarrow 0 $}
+                    \lIf{ $ \sum\limits_{j = 1, j \neq i}^{n} \left\lvert A_{ji} \right\rvert >= \left\lvert A_{ii}\right\rvert $ }{ $ col\_dom \longleftarrow 0 $}
+                }
+                \BlankLine
+                \lIf{$ row\_dom = 1 $}{\KwRet{1}}
+                \lIf{$ col\_dom = 1 $}{\KwRet{-1}}
+                \KwRet{0} \;
+            }
+        \end{function}\DecMargin{1em}
+
+        \hyperlink{jacobi.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+    \end{frame}
+    \begin{frame}[fragile, label = jacobi.getNorm]
+        \IncMargin{1em}\begin{function}[H]
+            \caption{getNorm(A, $A_{1}$, p)}
+            \KwIn{Ma trận $A$, giá trị kiểm tra $p$}
+            \KwOut{ $ \left\lVert A \right\rVert_{\infty}  $ nếu $p = 1$, $ \left\lVert A_{1} \right\rVert_{1}  $ nếu $p = -1$}
+            \Begin{
+                \lIf{$ p = 1 $}{\KwRet{$\left\lVert A \right\rVert_{\infty}$}}
+                \lIf{$ p = -1 $}{\KwRet{$\left\lVert A_{1} \right\rVert_{1}$}}
+            }
+        \end{function}\DecMargin{1em}
+
+        \IncMargin{1em}\begin{function}[H]
+            \caption{getLambda(A, p)}
+            \KwIn{Ma trận $A$, giá trị kiểm tra $p$}
+            \KwOut{ $ \lambda = 1 $ nếu $p = 1$, $ \lambda = \frac{max \left\lvert A_{ii}\right\rvert }{min \left\lvert A_{ii}\right\rvert } $ nếu $p = -1$}
+            \Begin{
+                \lIf{$ p = 1 $}{\KwRet{1}}
+                \BlankLine
+                $ max\_A \longleftarrow \left\lvert A_{11} \right\rvert  $\;
+                $ min\_A \longleftarrow \left\lvert A_{11} \right\rvert  $\;
+                \For{$i=1$ \KwTo n}{
+                    $ max\_A = max(max\_A, \left\lvert A_{ii} \right\rvert ) $\;
+                    $ min\_A = min(min\_A, \left\lvert A_{ii} \right\rvert ) $\;
+                }
+                \KwRet{$\frac{max\_A}{min\_A}$}
+            }
+        \end{function}\DecMargin{1em}
+        
+        \hyperlink{jacobi.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+    \end{frame}
+    \begin{frame}[fragile, label = jacobi.iterate]
+        \frametitle{Lặp - Đánh giá tiên nghiệm}
+        
+        \IncMargin{1em}\begin{function}[H]
+            \caption{iterate($X_{0}, B, T, q, \lambda, p, \varepsilon$)}
+            \KwIn{Ma trận xấp xỉ đầu $X_{0}$, $B$, $T$, hệ số $q$, $\lambda$, giá trị kiểm tra $p$ và sai số $\varepsilon$}
+            \KwOut{$X^{*}$ là ma trận nghịch đảo theo đánh giá tiên nghiệm}
+            \Begin{
+                $qk \longleftarrow 1, X \longleftarrow X_{0}$ \;
+                $predecessor\_norm \longleftarrow$ \hyperlink{jacobi.getNorm}{getNorm}$((BX_{0} + T) - X_{0}, p)$ \;
+                \BlankLine
+                \While{$ \frac{\lambda * qk * predecessor\_norm}{1 - q} > \varepsilon $}{
+                    $ X \longleftarrow BX + T $ \;
+                    $ qk \longleftarrow qk * q $ \;
+                }
+                \BlankLine
+                \KwRet{X}
+            }
+        \end{function}\DecMargin{1em}
+    
+        \hyperlink{jacobi.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+    \end{frame}
+    \begin{frame}[fragile]
+        \frametitle{Lặp - Đánh giá hậu nghiệm}
+
+        \IncMargin{1em}\begin{function}[H]
+            \caption{iterate($X_{0}, B, T, q, \lambda, p, \varepsilon$)}
+            \KwIn{Ma trận xấp xỉ đầu $X_{0}$, $B$, $T$, hệ số $q$, $\lambda$, giá trị kiểm tra $p$ và sai số $\varepsilon$}
+            \KwOut{$X^{*}$ là ma trận nghịch đảo theo đánh giá hậu nghiệm}
+            \Begin{
+                $old\_X \longleftarrow X_{0} $\;
+                $new\_X \longleftarrow BX_{0} + T $\;
+
+                \BlankLine
+                \While{$ \frac{\lambda * q * \text{\hyperlink{jacobi.getNorm}{getNorm}}(new\_X - old\_X, p)}{1 - q} > \varepsilon $}{
+                    $ old\_X \longleftarrow new\_X $\;
+                    $ new\_X \longleftarrow B * old\_X + T $\;
+                }
+                \BlankLine
+
+                \KwRet{$new\_X$}
+            }
+        \end{function}\DecMargin{1em}
+
+        \hyperlink{jacobi.algo}{\textcolor{blue}{Trở về thuật toán chính}}
+    \end{frame}
+
+
+
+    \begin{frame}[label = jacobi.code]
+        \frametitle{Chương trình}
+        \begin{center}
+            \includegraphics[scale = 0.4]{jacobi-code-qr.png}
+
+            \url{https://github.com/bu1th4nh/TALENTED-K64MI/blob/master/MI3040/report-code/jacobian.py}
+        \end{center}
+        
+    
+    \end{frame}

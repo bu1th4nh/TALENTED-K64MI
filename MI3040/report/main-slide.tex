@@ -1,0 +1,90 @@
+\documentclass[16pt, hyperref={unicode}]{beamer}
+\usepackage[utf8]{vietnam} % Sử dụng tiếng việt
+\usepackage{graphicx} % Cho phép chèn hỉnh ảnh
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphics} % thư viện để hiển thị ảnh
+\usepackage{caption} % thư viện để đặt caption
+\usepackage{booktabs} % thư viện để vẽ table
+\usepackage{hyperref} % thư viện để link tới các chương
+\usepackage[boxruled, lined]{algorithm2e}
+\usepackage{xcolor}
+ 
+
+\usetheme{CambridgeUS}
+\usecolortheme{crane}
+%=======================================================
+% Hình vẽ
+\graphicspath{{./rpt-img/}}
+
+
+% Phụ lục 
+% \usepackage[toc,page]{appendix} % Thêm phụ lục
+% \renewcommand{\appendixname}{Phụ lục}
+% \renewcommand{\appendixtocname}{Phụ lục}
+% \renewcommand{\appendixpagename}{Phụ lục}
+
+% Tài liệu tham khảo
+\usepackage[backend=biber]{biblatex}
+\addbibresource{bibliography/report-bib.bib}
+\DefineBibliographyStrings{english}{%
+bibliography = {Tài liệu tham khảo},
+references = {Tài liệu tham khảo},
+}
+
+
+
+% Dãn cách dòng & đánh số phần
+% \setlength{\parskip}{6pt}
+% \setlength{\parindent}{15pt}
+% \renewcommand{\baselinestretch}{1.5}
+\renewcommand{\thesection}{\arabic{section}}
+
+
+% Tên và tác giả
+\title{Các phương pháp tìm gần đúng ma trận nghịch đảo}
+\author{\textbf{Bùi Tiến Thành - MSSV 20190081}  \\\textbf{Chu Thị Ngân - MSSV 20195904} \\}
+\logo{\includegraphics[height=1.5cm]{LOGO_HUST.png}}
+\institute{CTTN Toán tin K64}
+\date{Tháng Mười một, 2020}
+
+
+% Đầu trang và chân trang
+% \pagestyle{fancy}
+% \fancyhf{}
+% \lhead{\rightmark}
+% \rfoot{CTTN Toán tin K64 }
+% \lfoot{Bùi Tiến Thành \texttt{(thanh.bt190081@sis.hust.edu.vn)} \\Chu Thị Ngân \texttt{(ngan.ct195904@sis.hust.edu.vn)}}
+% \rhead{Trang \thepage}
+% \renewcommand{\headrulewidth}{2pt}
+% \renewcommand{\footrulewidth}{2pt}
+% đánh số cho caption và footline
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{footline}[frame number]
+
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Mục lục}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+
+%=======================================================
+\begin{document}
+
+    \begin{frame}
+        \maketitle 
+    \end{frame}
+    
+    \input{slides/slide-sect1.tex}
+    \input{slides/slide-sect2.tex}
+    \input{slides/slide-sect3.tex}
+    \input{slides/slide-sect4.tex}
+    \input{slides/slide-sect5.tex}
+    \input{slides/slide-sect6.tex}
+
+\end{document}
