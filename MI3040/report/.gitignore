@@ -1,6 +1,6 @@
 *.aux
 *.bcf
-*.bbg
+*.bbl
 *.blg
 *.dvi
 *.fdb_latexmk
@@ -13,3 +13,4 @@
 *.xml
 script.txt
 *.synctex*
+main-report-blx.bib
