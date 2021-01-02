@@ -3,14 +3,71 @@
 \addappheadtotoc
 \renewcommand{\thesection}{\Alph{section}}
 \section{Các chương trình được sử dụng}
-    \par Các chương trình trong báo cáo và slide được lưu tại các liên kết này:
-    \begin{itemize}
-        \item \url{https://github.com/Talented-K64MI/MI3040-Numerical-Analysis/tree/master/Topic%202.5%20-%20Matrix%20Inversion/Newton%20Method}
-        \item \url{https://github.com/Talented-K64MI/MI3040-Numerical-Analysis/tree/master/Topic%202.5%20-%20Matrix%20Inversion/Jacobi%20Method}
-        \item \url{https://github.com/bu1th4nh/TALENTED-K64MI/blob/master/MI3040/report-code/gauss_seidel.py} 
-    \end{itemize}
+    \par Các chương trình trong báo cáo và slide được lưu tại các liên kết này: \url{https://github.com/bu1th4nh/TALENTED-K64MI/blob/master/MI3040/report-code/} 
 
 \section{Mã nguồn báo cáo và bài trình chiếu}
     \par Mã nguồn báo cáo và slide được lưu tại đây: \url{https://github.com/bu1th4nh/TALENTED-K64MI/tree/master/MI3040/report}
 
+\section{Hướng dẫn sử dụng chương trình}
 
+    \subsection{Lưu ý trước khi sử dụng}
+
+        \begin{itemize}
+            \item Phần thuật toán chính được đóng gói trong các file thư viện, có mẫu là \texttt{lib\_*.py}. Các file này cung cấp các gói để chạy thuật toán thông qua các file chương trình chính \texttt{interface\_*.py} với * là tên phương pháp. Do đó, file thư viện phải để cùng thư mục với file chương trình chính.
+            \item Các chương trình nhập đầu vào từ file \texttt{input.txt} và trả kết quả qua đầu ra chuẩn (standard output)
+            \item Các chương trình và thuật toán có sử dụng thư viện \texttt{numpy} và \texttt{scipy} và càn cài đặt các thư viện này trước khi chạy bằng lệnh sau:
+            \begin{verbatim}
+                pip install numpy
+                pip install scipy
+            \end{verbatim}
+        \end{itemize}
+
+    \subsection{Hướng dẫn sử dụng chi tiết}
+
+        \subsubsection{Phương pháp Newton}
+
+            \par Các file trong thư mục: \texttt{Newton}
+            \begin{itemize}
+                \item \textbf{Chương trình chính:} \texttt{interface\_newton.py}
+                \item \textbf{Gói thuật toán độc lập:} \texttt{lib\_newton.py}
+                \item \textbf{File dữ liệu đầu vào:} \texttt{input.txt}
+            \end{itemize}
+
+            \par Các bước sử dụng
+            \begin{itemize}
+                \item \textbf{Bước 1:} Nhập ma trận vào file \texttt{input.txt}
+                \item \textbf{Bước 2:} Chạy file \texttt{interface\_newton.py}. Chương trình sẽ tự động dò kích cỡ ma trận dựa theo ma trận người dùng nhập vào và báo lỗi nếu ma trận nhập vào không hợp lệ.
+                \item \textbf{Bước 3:} Nhập sai số, sau đó chương trình sẽ đưa ra số lần lặp, ma trận nghịch đảo và kết quả nhân ngược. Trường hợp đầu vào không hợp lệ, chương trình sẽ báo lỗi và đưa ra ma trận NaN
+            \end{itemize}
+
+        \subsubsection{Phương pháp Jacobi}
+
+            \par Các file trong thư mục: \texttt{Jacobi}
+            \begin{itemize}
+                \item \textbf{Chương trình chính:} \texttt{interface\_jacobi.py}
+                \item \textbf{Gói thuật toán độc lập:} \texttt{lib\_jacobi.py}
+                \item \textbf{File dữ liệu đầu vào:} \texttt{input.txt}
+            \end{itemize}
+
+            \par Các bước sử dụng
+            \begin{itemize}
+                \item \textbf{Bước 1:} Nhập ma trận vào file \texttt{input.txt}
+                \item \textbf{Bước 2:} Chạy file \texttt{interface\_jacobi.py}. Chương trình sẽ tự động dò kích cỡ ma trận dựa theo ma trận người dùng nhập vào và báo lỗi nếu ma trận nhập vào không hợp lệ.
+                \item \textbf{Bước 3:} Nhập sai số, sau đó chương trình sẽ đưa ra kiểu ma trận, số lần lặp, ma trận nghịch đảo và kết quả nhân ngược với 2 cách đánh giá tiên nghiệm và hậu nghiệm. Trường hợp đầu vào không hợp lệ, chương trình sẽ báo lỗi và đưa ra ma trận NaN
+            \end{itemize}
+
+        \subsubsection{Phương pháp Gauss-Seidel}
+
+            \par Các file trong thư mục: \texttt{Gauss-Seidel}
+            \begin{itemize}
+                \item \textbf{Chương trình chính:} \texttt{interface\_gauss\_seidel.py}
+                \item \textbf{Gói thuật toán độc lập:} \texttt{lib\_gauss\_seidel.py}
+                \item \textbf{File dữ liệu đầu vào:} \texttt{input.txt}
+            \end{itemize}
+
+            \par Các bước sử dụng
+            \begin{itemize}
+                \item \textbf{Bước 1:} Nhập ma trận vào file \texttt{input.txt}
+                \item \textbf{Bước 2:} Chạy file \texttt{interface\_gauss\_seidel.py}. Chương trình sẽ tự động dò kích cỡ ma trận dựa theo ma trận người dùng nhập vào và báo lỗi nếu ma trận nhập vào không hợp lệ.
+                \item \textbf{Bước 3:} Nhập sai số, sau đó chương trình sẽ đưa ra kiểu ma trận, số lần lặp, ma trận nghịch đảo và kết quả nhân ngược với 2 cách đánh giá tiên nghiệm và hậu nghiệm. Trường hợp đầu vào không hợp lệ, chương trình sẽ báo lỗi và đưa ra ma trận NaN
+            \end{itemize}

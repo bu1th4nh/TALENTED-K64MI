@@ -1,0 +1,17 @@
+\IncMargin{1em}\begin{function}[H]
+    \caption{getFirstApprox($A$)}
+    \KwIn{Ma trận $A$}
+    \KwOut{Ma trận $X_{0}$ thỏa mãn điều kiện hội tụ}
+    \SetAlgoLined   
+    \Begin{
+        $ t1 \longleftarrow \left\lVert A \right\rVert_{1}  $ \;
+        $ t2 \longleftarrow \left\lVert A \right\rVert_{\infty}  $ \;
+        $ X_{0} \longleftarrow (\frac{A}{t1 * t2})^{T} $   \;
+        
+        \While{$ \left\lVert E - AX_{0} \right\rVert \geq 1 $}{
+            $ X_{0} \longleftarrow X_{0}(2E - AX_{0}) $ \;
+        }
+
+        \KwRet{$X_{0}$}
+    }         
+\end{function}\DecMargin{1em}

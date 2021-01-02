@@ -213,31 +213,3 @@ class gaussseidel_mat_inversion:
         return self.__successor_iteration(A, B, T, S, q, p, relax_factor);
     #}
 #}
-
-
-#===================================================================================
-# Chương trình ví dụ
-
-# # A = np.random.rand(3,3) * 1000;
-# A = np.array([4, 0.24, -0.08, 0.09, 3, -0.15, 0.04, -0.08, 4]);
-# # A = np.array([1, 0, 0, 0, 4, 0, 0, 0, 2]);
-# A = np.reshape(A, (3, 3));
-
-# # print(A);
-
-# uu = gaussseidel_mat_inversion(A, 3, 1e-10);
-# A1 = uu.gauss_seidel_iteration(1);
-# print(A1);
-# print(A1 @ A);
-
-# A2 = uu.gauss_seidel_iteration(2);
-# print(A2);
-# print(A2 @ A);
-
-# A3 = uu.gauss_seidel_iteration(1);
-# print(A3);
-# print(A3 @ A);
-
-# A4 = uu.gauss_seidel_iteration(2);
-# print(A4);
-# print(A4 @ A);

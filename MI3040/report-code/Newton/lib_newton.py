@@ -101,24 +101,3 @@ class newton_mat_inversion:
         return self.__pure_newton(X_0);
     #}
 #}
-
-
-#===================================================================================
-# Chương trình ví dụ
-# A = np.random.rand(3,3);
-# A = np.array([1, 3, 2, 7, 1, 9, 2, 5, 4]);
-# A = np.reshape(A, (3, 3));
-# uu = newton_mat_inversion(A, 3, 1e-10);
-# A1 = uu.improved_newton();
-# print(A1);
-# print(A1 @ A);
-
-# B = np.array([4, 0.24, -0.08, 0.09, 3, -0.15, 0.04, -0.08, 4]);
-# B = np.reshape(B, (3, 3));
-# vv = newton_mat_inversion(B, 3, 1e-10);
-# B1 = vv.improved_newton();
-# print(B1);
-# print(B1 @ B);
-
-# print(uu.A);
-# print(vv.A);

@@ -126,7 +126,7 @@ class jacobi_mat_inversion:
 
         # Tính T, B, q, lambda
         T          = np.diag(1 / np.diag(A));
-        B          = E - T @ A;
+        B          = E - T @ A     if    (p == 1)    else    E - A @ T;
         q          = self.__getNorm(B, p);
         var_lambda = self.__getLambda(A, p);
 
@@ -136,21 +136,3 @@ class jacobi_mat_inversion:
         return self.__successor_iteration(A, B, T, q, var_lambda, p);
     #}
 #}
-
-
-#===================================================================================
-# Chương trình ví dụ
-
-# A = np.random.rand(3,3) * 1000;
-# A = np.array([4, 0.24, -0.08, 0.09, 3, -0.15, 0.04, -0.08, 4]);
-# A = np.reshape(A, (3, 3));
-
-# print(A);
-
-# uu = jacobi_mat_inversion(A, 3, 1e-10);
-# A1 = uu.jacobi_iteration(1);
-# print(A1);
-# print(A1 @ A);
-# A2 = uu.jacobi_iteration(2);
-# print(A2);
-# print(A2 @ A);

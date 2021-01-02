@@ -1,4 +1,4 @@
-\section{Phân tích và tổng kết các phương pháp}
+\section{Phân tích, tổng kết các phương pháp và hệ thống ví dụ}
 \subsection{Ưu, nhược điểm của các phương pháp}
     
     \subsubsection{Ưu điểm chung}
@@ -34,13 +34,85 @@
 
     Trong báo cáo này, nhóm đề xuất 2 cách chọn xấp xỉ đầu cho các phương pháp nêu trên như sau:
 
-    \begin{itemize}
+    \begin{enumerate}[label=(\roman*)]
         \item \textbf{Sử dụng kết quả của các phương pháp giải đúng:} Do tính self-correcting của các phương pháp giải gần đúng, chúng ta có thể "chữa lại" kết quả của các phương pháp giải đúng như Gauss-Jordan, Cholesky,... bằng cách lấy kết quả của các phương pháp giải đúng làm đầu vào và xấp xỉ đầu cho các phương pháp giải gần đúng để cải thiện độ chính xác về tính toán cho các phương pháp giải đúng. Cách chọn xấp xỉ đầu này phù hợp với cả ba phương pháp Newton, Gauss-Seidel và Jacobi.
         
         \item \textbf{Một cách chọn xấp xỉ đầu cho phương pháp Newton:} Năm 1986, Victor Pan cùng với John H. Reif \cite{PanReif} đề xuất một phương pháp xấp xỉ đầu vào cho phương pháp Newton. Theo đó, ma trận xấp xỉ ban đầu sẽ được tính từ ma trận đề bài $A$ như sau:
         $$ X_{0} = \frac{A^{T}}{\left\lVert A \right\rVert_{1}\left\lVert A \right\rVert_{\infty}} $$
-        Khi đó, phương pháp Newton hội tụ.
-    \end{itemize} 
+    \end{enumerate} 
+
+    Trên cơ sở của mục (ii), nhóm đề xuất gói tìm xấp xỉ đầu của phương pháp Newton như sau:
+    
+    \input{rpt-chapters/newton_findfirstapprox.tex}
+
+    \newpage
+
+\subsection{Hệ thống ví dụ}
+
+    \textbf{Ví dụ 1:} Nghịch đảo ma trận sau:
+    $$
+        \begin{bmatrix}
+            15 & 1  & 4  & -8 \\
+            2  & 16 & 9  & 3  \\
+            1  & -9 & 12 & 1  \\
+            1  & 0  & 5  & 23 
+        \end{bmatrix}
+    $$
+    Đây là ma trận chéo trội hàng, thỏa mãn điều kiện hội tụ của phương pháp Jacobi cũng như Gauss-Seidel. Khi chạy các thuật toán với ma trận này với sai số $10^{-15}$, ta được kết quả kèm ma trận tích của kết quả thu được với ma trận ban đầu như sau: 
+    
+    \begin{center}
+        \includegraphics[scale=0.45]{example-02-newton.png} \\
+        \textit{Phương pháp Newton với xấp xỉ đầu theo mục 5.2(ii)}
+        
+        \includegraphics[scale=0.7]{example-02-jacobi.png} \\
+        \textit{Phương pháp Jacobi, xấp xỉ đầu là ma trận A}
+        
+        \includegraphics[scale=0.7]{example-02-gausseidel.png} \\
+        \textit{Phương pháp Gauss-Seidel, xấp xỉ đầu là ma trận A}
+    \end{center}
+
+    Có thể thấy với xấp xỉ đầu là ma trận A, các phương pháp Jacobi và Gauss-Seidel có số bước lặp khá lớn do hệ số co phụ thuộc xấp xỉ đầu. Đây cũng là chủ đề nhóm sẽ cải tiến trong tương lai.
+        
+
+
+    \textbf{Ví dụ 2:} Nghịch đảo ma trận sau:
+    $$
+        \begin{bmatrix}
+            0         & 5       & 0     & 0       \\
+            0         & 0.00013 & 40    & 0       \\
+            0         & 0       & 0.152 & 0.00067 \\
+            0.00001 & 0       & 0     & 0
+        \end{bmatrix}
+    $$
+    Đây là ma trận không chéo trội và có các định thức con chính bằng 0, tức là không thể chạy được với phương pháp viền quanh (chưa cải tiến) và các phương pháp Jacobi cũng như Gauss-Seidel. Khi chạy thuật toán Newton kèm cải tiến xấp xỉ đầu với ma trận này với sai số $10^{-15}$, ta được kết quả kèm ma trận tích của kết quả thu được với ma trận ban đầu như sau: 
+
+    \begin{center}
+        \includegraphics[scale=0.45]{example-01-newton.png}
+    \end{center}
+
+
+    \textbf{Ví dụ 3:} Nghịch đảo ma trận sau: \textit{(Ma trận gần suy biến)}
+    $$
+        \begin{bmatrix}
+            3      & 2        & 7 \\
+            2.0001 & 6.1      & 4 \\
+            0      & 0.000001 & 0.001
+        \end{bmatrix}
+    $$
+    Đây là ma trận chéo trội hàng và là ma trận gần suy biến, thỏa mãn điều kiện hội tụ của phương pháp Jacobi cũng như Gauss-Seidel. Khi chạy các thuật toán với ma trận này với sai số $10^{-15}$, ta được kết quả kèm ma trận tích của kết quả thu được với ma trận ban đầu như sau: 
+
+    \begin{center}
+        \includegraphics[scale=0.45]{example-03-newton.png} \\
+        \textit{Phương pháp Newton với xấp xỉ đầu theo mục 5.2(ii)}
+        
+        \includegraphics[scale=0.7]{example-03-jacobi.png} \\
+        \textit{Phương pháp Jacobi, xấp xỉ đầu là ma trận A}
+        
+        \includegraphics[scale=0.7]{example-03-gausseidel.png} \\
+        \textit{Phương pháp Gauss-Seidel, xấp xỉ đầu là ma trận A}
+    \end{center}
+
+    Với hai phương pháp Jacobi và Gauss-Seidel, ví dụ này cho thấy sự khác biệt rõ rệt về số bước lặp giữa hai phương pháp tiên nghiệm và hậu nghiệm. Ở cả 2 phương pháp, cách đánh giá tiên nghiệm có số lần lặp gần 2900 bước, trong khi cách đánh giá hậu nghiệm có số lần lặp chưa đến 60 mà vẫn đảm bảo kết quả tương tự cách đánh giá tiên nghiệm. Ngoài ra, cả 3 phương pháp đều cho thấy sự ổn định khi ma trận có trạng thái gần suy biến.
 
 \subsection{Ứng dụng}
 
