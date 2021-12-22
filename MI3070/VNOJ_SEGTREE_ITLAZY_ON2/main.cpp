@@ -51,7 +51,7 @@ using namespace std;
 //Macroes
 #define sp ' '
 #define el '\n'
-#define task ""
+#define task "ITLAZY"
 #define maxinp ()
 #define fi first
 #define se second
@@ -164,6 +164,7 @@ vi a;
 //Main Procedure
 int main()
 {
+    FILEOP();
     cin >> n;
     a = vi(n+1, 0);
     FOR(i, 1, n) cin >> a[i];
