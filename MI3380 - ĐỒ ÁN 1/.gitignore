@@ -1,0 +1,10 @@
+*.exe
+*.o
+*.inp
+*.out
+*.depend 
+*.layout
+*.save
+*.cbp
+*.txt
+SPOJ/*.bat
