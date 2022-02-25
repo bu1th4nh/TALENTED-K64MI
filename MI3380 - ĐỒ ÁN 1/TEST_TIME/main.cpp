@@ -40,7 +40,7 @@
 using namespace std;
 
 #include "test_lib.h"
-#include "traditional.h"
+#include "augmenting_path.h"
 #include "hopcroftkarp.h"
 
 //=====================================
