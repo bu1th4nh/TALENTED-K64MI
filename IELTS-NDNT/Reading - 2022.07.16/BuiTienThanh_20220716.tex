@@ -1,0 +1,300 @@
+
+% /*==========================================================================================*\
+% **                        _           _ _   _     _  _         _                            **
+% **                       | |__  _   _/ | |_| |__ | || |  _ __ | |__                         **
+% **                       | '_ \| | | | | __| '_ \| || |_| '_ \| '_ \                        **
+% **                       | |_) | |_| | | |_| | | |__   _| | | | | | |                       **
+% **                       |_.__/ \__,_|_|\__|_| |_|  |_| |_| |_|_| |_|                       **
+% \*==========================================================================================*/
+% 
+%   Name: Reading Homework
+%   Author: @bu1th4nh (Bùi Tiến Thành)
+%   Date: 2022/07/08 10:38
+%   URL: https://github.com/bu1th4nh
+% 
+\documentclass[12pt,a4paper]{article}
+% \usepackage[utf8]{vietnam} % Sử dụng tiếng việt
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm] {geometry} % Canh lề trang
+\usepackage{graphicx} % Cho phép chèn hỉnh ảnh
+\usepackage{fancybox} % Tạo khung box
+\usepackage{indentfirst} % Thụt đầu dòng ở dòng đầu tiên trong đoạn
+\usepackage{amsthm} % Cho phép thêm các môi trường định nghĩa
+\usepackage{latexsym} % Các kí hiệu toán học
+\usepackage{amsmath} % Hỗ trợ một số biểu thức toán học
+\usepackage{amssymb} % Bổ sung thêm kí hiệu về toán học
+\usepackage{amsbsy} % Hỗ trợ các kí hiệu in đậm
+\usepackage{amsfonts} % Hỗ trợ chèn font
+\usepackage{fontawesome}
+\usepackage{array} % Tạo bảng array
+\usepackage{enumitem} % Cho phép thay đổi kí hiệu của list
+\usepackage{subfiles} % Chèn các file nhỏ, giúp chia các chapter ra nhiều file hơn
+\usepackage{titlesec} % Giúp chỉnh sửa các tiêu đề, đề mục như chương, phần,..
+\usepackage{chngcntr} % Dùng để thiết lập lại cách đánh số caption,..
+\usepackage{pdflscape} % Đưa các bảng có kích thước đặt theo chiều ngang giấy
+\usepackage{afterpage}
+\usepackage{capt-of} % Cho phép sử dụng caption lớn đối với landscape page
+\usepackage{multirow} % Merge cells
+\usepackage{fancyhdr} % Cho phép tùy biến header và footer
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{array, makecell}
+\usepackage{longtable}
+
+\usepackage{float}
+\usepackage{minted}
+\setminted[sql]{
+    frame=lines,
+    breaklines,
+    autogobble,
+    mathescape=true,
+    escapeinside=||,
+    breakautoindent=false,
+    linenos=true,
+}
+
+
+% \usepackage{iwona}
+\usepackage[nomath]{lmodern} % Chuyển font code cho Latex
+\usepackage{tgpagella}  % Font bản đẹp
+% \usepackage{unicode-math}
+
+
+
+%=======================================================
+\usepackage[pdftex, % Sử dụng PDF TeX
+bookmarks=true, % Tạo bookmarks trong tập tin PDF
+colorlinks=false, % Chữ có màu
+pdfencoding=auto, % Tự động điều chỉnh encoding của PDF
+unicode=true, % Sử dụng Unicode
+pdffitwindow=true, % Fit cho vừa cửa sổ
+pdfstartview={FitW}, % Zoom file PDF cho vừa khít với nội dung
+pdftoolbar=false, % Ẩn đi tool bar trong PDF viewer
+pdfmenubar=false % Ẩn đi menu bar trong PDF viewer
+]{hyperref}
+
+% Dãn cách dòng & đánh số phần
+\onehalfspacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{15pt}
+\renewcommand{\baselinestretch}{1.5}
+\renewcommand{\thesection}{\arabic{section}}
+
+
+% Tài liệu tham khảo -- Trong văn bản này dùng làm danh sách từ mới
+\usepackage[block=ragged]{biblatex}
+\addbibresource{biblio.bib}
+\DefineBibliographyStrings{english}{%
+bibliography = {Words and Idioms Explanation},
+references = {Words and Idioms Explanation},
+}
+
+
+
+% Hình vẽ
+\graphicspath{{./rpt-img/}}
+\usepackage{svg} % Chèn ảnh vector
+\usepackage{tikz} % cái này để vẽ bảng cho đẹp
+\usetikzlibrary{external}
+
+% Các gói phụ trợ cho hình vẽ
+\usepackage{mathdots} 
+\usepackage{yhmath}
+\usepackage{cancel}
+\usepackage{color}
+\usepackage{siunitx}
+
+% Cài đặt TikZ
+\usetikzlibrary{fadings}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{shapes}
+
+
+
+
+\renewcommand\theadfont{\bfseries}
+\setcounter{section}{-1}
+\title{\fontfamily{iwona}\selectfont \MakeUppercase{\textbf{Reading Homework}}}
+\author{\fontfamily{iwona}\selectfont Bui Tien Thanh (\texttt{@bu1th4nh})}
+% \DeclareMathSizes{12}{18}{10}{10}      % For size 11 text
+
+%=======================================================
+\begin{document}
+
+    \maketitle 
+
+    \section{Highlight Conventions}
+    \begin{itemize}
+        \item Words highlighted in \textcolor{red}{red} are \textcolor{red}{\textit{conventional}} or \textcolor{red}{\textit{highlighting the essential information in paragraphs}}.
+        \item Words highlighted in \textcolor{blue}{blue} are \textcolor{blue}{\textit{idioms}}. 
+        \item Words highlighted in \textcolor{orange}{orange} are \textcolor{orange}{\textit{scientific, technical or professional-related terms}}. 
+        \item Words highlighted in \textcolor{magenta}{magenta} are \textcolor{magenta}{\textit{phrasal verbs}}. 
+    \end{itemize}
+
+    \section{Article Reading}
+
+    \begin{itemize}
+        \item \textbf{Title:} \textit{Shinzo Abe death: shock in Japan at killing of former PM during election campaign}
+        \item \textbf{Article link:} \href{https://www.theguardian.com/world/2022/jul/08/shinzo-abe-japans-former-prime-minister-dies-after-being-shot}{Click here}
+    \end{itemize}
+
+    \par \textbf{Police believe attacker \textcolor{blue}{bore grudge against} \cite{bore_grudge_against} Abe as some critics question level of security surrounding Japan’s longest-serving PM}
+
+    \par Sorrow and disbelief descended on Japan after Shinzo Abe – the former prime minister and a \textcolor{red}{towering political figure}\cite{towering} – was shot dead while giving a campaign speech on Friday morning.
+
+    \par Abe, 67, was pronounced dead early in the evening, prompting a flood of tributes from current and former world leaders, and anger that a politician could be gunned down \textcolor{blue}{in broad daylight}\cite{in_broad_daylight} in one of the world’s safest societies two days before an election.
+
+    \par Abe, the country’s longest-serving prime minister, who resigned in 2020, was flown to hospital by helicopter after the attack outside Yamato Saidaiji railway station in Nara, an ancient capital in the country’s west known for its Buddhist temples and free-roaming deer.
+
+    \par As the light faded on Friday, supporters and local residents visited the scene of the attack – a pedestrian crossing next to a white guardrail – where Abe had been calling on voters to re-elect his Liberal Democratic party (LDP) colleague Kei Sato in this Sunday’s upper house elections when he was shot.
+
+
+
+    \par Alone and in pairs, they stepped forward to lay flowers, bottles of sports drink, slices of watermelon wrapped in \textcolor{orange}{cellophane} \cite{cellophane}, and bags of sweets. They bowed and clasped their hands in prayer; some shed tears and lowered their heads again as they turned towards banks of TV cameras.
+
+    \par “I was having a cigarette break near the station when I heard a huge bang,” a local traffic control employee who declined to give his name told the Guardian. “There was white smoke everywhere. I wouldn’t say people were panicking … like me, they initially had no idea what was going on.”
+    
+    \par Abe was only minutes into his speech and had just raised his fist to make a point when he stumbled and fell after two shots were fired from behind him at close range. Seconds later, men thought to be members of Japan’s secret service \textcolor{red}{tackled}\cite{tackled} a suspect to the ground in a dramatic intervention caught on video.
+
+
+
+
+
+    \par The suspect was named as Tetsuya Yamagami, a 41-year-old resident of Nara who spent three years in the maritime self-defence forces until 2005. Police believe he had crafted a homemade gun. The weapon appeared from TV footage to \textcolor{red}{comprise}\cite{comprise} two cylindrical metallic parts heavily bound in black tape.
+
+    \par Police said they were investigating whether he had acted alone. He reportedly said he had wanted to kill Abe because he was “dissatisfied” with him over issues unrelated to politics. The suspect said he \textcolor{blue}{bore a grudge against} \cite{bore_grudge_against} a “specific organisation” and believed Abe was part of it, police said, adding that it was not clear if the unnamed organisation actually existed.
+
+    \par Several similar homemade weapons to the one used in the attack were \textcolor{red}{confiscated} \cite{confiscated} during a search of the suspect’s house.
+
+    \par Makoto Ichikawa, a local businessman who had been near the train station waiting for his wife, said Yamagami “came \textcolor{blue}{out of nowhere} \cite{out_of_nowhere} on to the middle of the road holding a gun”. He said he was struck by the \textcolor{red}{assailant}\cite{assailant}’s “normal” expression.
+
+    \par Ken Namikawa, the mayor of a nearby town, used a microphone to call for people with medical experience to help Abe. A photograph taken at about the same time showed Abe lying face up, blood on his white shirt and surrounded by several people, at least one of whom was \textcolor{red}{administering} \cite{administering} heart massage.
+
+    \par Abe was \textcolor{red}{airlifted}\cite{airlifted} to a hospital for emergency treatment but was not breathing and his heart had stopped. He was pronounced dead after emergency treatment that included massive blood transfusions, hospital officials said.
+
+    \par Hidetada Fukushima, the head of the emergency department at Nara Medical University, said the attack inflicted major damage to Abe’s heart, in addition to two neck wounds that damaged an \textcolor{orange}{artery}\cite{artery}, causing extensive bleeding. Abe was in a state of \textcolor{orange}{cardiopulmonary arrest} \cite{cardiopulmonary_arrest} when he arrived at the hospital and never regained his vital signs, Fukushima said.
+
+    \par The psychological fallout from an assassination by a gunman in a country where gun crime is almost unheard of is hard to gauge at this early stage. But Abe’s death, coming at the end of an election campaign, will almost certainly prompt a rethink of the tradition of bringing politicians into close contact with voters.
+
+    \par Some parties announced that their senior members would halt campaigning for Sunday’s election, but the ruling LDP and its junior \textcolor{red}{coalition}\cite{coalition} partner Komeito said \textcolor{red}{canvassing}\cite{canvassing} would resume on Saturday.
+
+    \par An official of the Nara prefectural police department said the department would \textcolor{magenta}{look into}\cite{look_into} whether security at the event was sufficient and take appropriate action. Several commentators said security around Abe should have been stronger.
+
+
+
+
+
+
+    \par Several Japanese prime ministers were assassinated in the prewar era, but Abe is the first sitting or former \textcolor{red}{premier}\cite{premier} to have been killed since the days of \textcolor{orange}{militarism}\cite{militarism}.
+
+    \par There have been other politically motivated killings in more recent times, however. In 1960 the leader of the Japan Socialist party, Inejiro Asanuma, was assassinated during a speech in by a \textcolor{orange}{rightwing}\cite{rightwing} youth armed with a samurai short sword. In 2007 the mayor of Nagasaki, Iccho Ito, was shot dead by a member of a yakuza crime \textcolor{red}{syndicate}\cite{syndicate}.
+
+    \par Japan’s current prime minister, Fumio Kishida, said Abe had demonstrated “great leadership” during his time in office, adding that he was “\textcolor{blue}{lost for words}"\cite{lost_for_words}.
+
+    \par “I have great respect for the legacy Shinzo Abe left behind and I offer my deepest \textcolor{red}{condolences}\cite{condolences}”, a visibly upset Kishida said after abandoning a campaign stop and returning to Tokyo. “This attack is an act of brutality that happened during the elections – the very foundation of our democracy – and is absolutely unforgivable.”
+
+    \par Joe Biden, who is dealing with a summer of mass shootings in the US, said: “Gun violence always leaves a deep scar on the communities that are affected by it.” He added in a Twitter post that he was “\textcolor{red}{stunned}\cite{stunned}, outraged, and deeply saddened by the news that my friend Abe Shinzo, former prime minister of Japan, was shot and killed. He was a champion of the friendship between our people. The United States \textcolor{blue}{stands with}\cite{stands_with} Japan in this moment of grief”.
+
+    \par Abe was a \textcolor{red}{divisive}\cite{divisive} leader, \textcolor{red}{adored}\cite{adored} by \textcolor{red}{conservatives}\cite{conservatives} who had tired of decades of official \textcolor{red}{soul-searching}\cite{soul-searching} over Japan’s wartime conduct, but \textcolor{red}{loathed}\cite{loathed} by progressives who watched on with horror as he used his party’s comfortable majority in to loosen some of the legal \textcolor{red}{shackles}\cite{shackles} on the country’s military, known as the self-defence forces.
+
+    \par Among his admirers were Rami Miyamoto, a 23-year-old company employee who had stopped to watch Abe’s speech on the way to a work meeting. “I’m in a state of shock,” she said. “I followed Abe’s career as prime minister and admired what he was trying to do for Japan. I’ll remember him as someone who faced huge challenges but always came back and carried on. I will never forgive the person who did this.”
+
+    \par Yuji Izawa was working from home when he heard helicopters overhead. Moments later he received a news alert saying Abe had been shot. “My home isn’t that far away, so I came to find out what was happening,” said Izawa, who works in telecoms. “I was praying that he was going to be OK, but …” he \textcolor{magenta}{trailed off}\cite{trailed_off}. “How could something this terrible have happened in Japan?
+
+    \printbibliography
+
+\newcommand{\redhighlight}{\textcolor{red}}
+\section{IELTS Reading: Completion}
+    % \par \textcolor{red}{Still work in progress :)}
+    \subsection{Task: Painters of time}
+    \begin{center}
+        \label{tab:PaintersOfTime}
+        \begin{longtable}{|>{\centering}p{0.1\textwidth}|>{\centering}p{0.2\textwidth}|>{\arraybackslash}p{0.65\textwidth}|} 
+            \hline
+            \hline
+            \thead{Qst. Nr.} & \thead{Answer} & \thead{Explanation} \\ 
+            \hline
+            \hline
+            \multicolumn{3}{|c|}{\textbf{Question 1-6}} \\ 
+            \hline
+            \hline
+            1  & (vi) & \textbf{Paragraph A:} ...\redhighlight{The works of Aboriginal artists are now much in demand throughout the world}, and not just in Australia, where they are already fully recognised... \\ \hline
+            2  & (vii) & \textbf{Paragraph B:} ...Their artistic movement began about 30 years ago. \redhighlight{But its roots go back to time immemorial. All the works refer to the founding myth of the Aboriginal culture}, ‘the Dreaming’... \\ \hline
+            3  & (viii) & \textbf{Paragraph C:} ...These original ‘natives' have been living in Australia for 50,000 years, \redhighlight{but they were undoubtedly maltreated by the newcomers}. Driven back to the most barren lands or crammed into slums on the outskirts of cities, the \redhighlight{Aborigines were subjected to a policy of ‘assimilation’, which involved kidnapping children to make them better ‘integrated' into European society}...\\ \hline
+            4  & (i) & \textbf{Paragraph D:} ...\redhighlight{suggested to a group of Aborigines that they should decorate the school walls with ritual motifs}, so as to pass on to the younger generation the myths that were starting to fade from their collective memory. Lie gave them brushes, colours and surfaces to paint on cardboard and canvases. \redhighlight{He was astounded by the result}... \\ \hline
+            5  & (iv) & \textbf{Paragraph E:} ...had been encouraged to reproduce on tree bark the motifs found on rock faces. Artists turned out a steady stream of works, \redhighlight{supported by the churches, which helped to sell them to the public}, and between 1950 and I960 Aboriginal paintings began to reach overseas museums. \redhighlight{Painting on bark persisted in the north, whereas the communities in the central desert increasingly used acrylic paint}... \\ \hline
+            6  & (v) & \textbf{Paragraph F:} What Aborigines depict are \redhighlight{always elements of the Dreaming, the collective history} that each community is both part of and guardian of. I \redhighlight{Dreaming is the story of their origins, of their ‘Great Ancestors’}, who passed on their knowledge, their art and their skills (hunting, medicine, painting, music and dance) to man...  \\ \hline
+            \hline
+            \multicolumn{3}{|c|}{\textbf{Question 7-10}} \\ 
+            \hline
+            \hline
+            7  & thousands of years & \textbf{Paragraph D:} ...But their art did not come like a bolt from the blue: \redhighlight{for thousands of years Aborigines had been ‘painting' on the ground using sands of different colours, and on rock faces}. They had also been decorating their bodies for ceremonial purposes... \\ \hline
+            8  & tree bark & \textbf{Paragraph E:} ...\redhighlight{In the early twentieth century}, Aboriginal communities brought together by missionaries in northern Australia had been encouraged \redhighlight{to reproduce on tree bark} the motifs found on rock faces. Artists turned out a steady stream of works, \redhighlight{supported by the churches}... \\ \hline
+            9  & overseas museums & \textbf{Paragraph E:} ...and \redhighlight{between 1950 and I960 Aboriginal paintings began to reach overseas museums}... \\ \hline
+            10 & school walls & \textbf{Paragraph D:} ...\redhighlight{In 1971}, a white school teacher. Geoffrey Bardon, suggested to a group of Aborigines that they should \redhighlight{decorate the school walls with ritual motifs} \\ \hline
+            \hline
+        \end{longtable}
+    \end{center}
+
+    
+    \subsection{Task: Corporate Social Responsibility}
+    \begin{center}
+        \label{tab:CSR}
+        \begin{longtable}{|>{\centering}p{0.1\textwidth}|>{\centering}p{0.2\textwidth}|>{\arraybackslash}p{0.65\textwidth}|} 
+            \hline
+            \hline
+            \thead{Qst. Nr.} & \thead{Answer} & \thead{Explanation} \\ 
+            \hline
+            \hline
+            \multicolumn{3}{|c|}{\textbf{Question 14-20}} \\ 
+            \hline
+            \hline
+            14 & (v) & \textbf{Paragraph A:} ...When a well-run business applies its vast resources and expertise to social problems that it understands and in which it has a stake, it can have a greater impact than any other organization. The notion of license to operate derives from the fact that \redhighlight{every company needs tacit or explicit permission from governments, communities, and numerous other stakeholders to justify CSR initiatives to improve a company’s image, strengthen its brand, enliven morale and even raise the value of its stock}. \\ \hline
+            15 & (viii) & \textbf{Paragraph B:} ...To advance CSR. \redhighlight{we must root it in a broad understanding of the interrelationship between a corporation and society. Successful corporations need a healthy society}...At the same time, \redhighlight{a healthy society needs successful companies}. No social program can rival the business sector when it comes to creating the jobs, wealth, and innovation that improve standards of living and social conditions over time. \\ \hline
+            16 & (vi) & \textbf{Paragraph C:} ...\redhighlight{No longer can companies be content to monitor only the obvious social impacts of today}. Without a careful process for identifying evolving social effects of tomorrow, firms may risk their very survival....\\ \hline
+            17 & (vii) & \textbf{Paragraph D:} No business can solve all of society’s problems or bear the cost of doing so. Instead, \redhighlight{each company must select issues that intersect with its particular business}. Other social agendas are best left to those companies in other industries, NGOs, or government institutions that are better positioned to address them... \\ \hline
+            18 & (iii) & \textbf{Paragraph E:} ...great pride in their participation. \redhighlight{Their effect is inherently limited}, however. No matter how beneficial (the program is, \redhighlight{it remains incidental to the company’s business, and the direct effect on GE’s recruiting and retention is modest}... \\ \hline
+            19 & (i) & \textbf{Paragraph F:} ...Microsoft’s Working Connections partnership with the American Association of Community Colleges (AACC) \redhighlight{is a good example of a shared-value opportunity arising from investments in context}...  \\ \hline
+            20 & (ii) & \textbf{Paragraph G:} ...In short, \redhighlight{nearly every aspect of the company’s value chain reinforces the social dimensions of its value proposition}, distinguishing Whole Foods from its competitors....  \\ \hline
+            \hline
+            \multicolumn{3}{|c|}{\textbf{Question 21-22}} \\ 
+            \hline
+            \hline
+            21 & equal opportunity & \textbf{Paragraph B:} ...Successful corporations need a healthy society. \redhighlight{Education, health care, and equal opportunity are essential to a productive workforce}.... \\ \hline
+            22 & internal costs & \textbf{Paragraph B:} ...essential to a productive workforce. \redhighlight{Safe products and working conditions not only attract customers but lower the internal costs of accidents}. Efficient utilization of land, water, energy... \\ \hline
+            \hline
+        \end{longtable}
+    \end{center}
+    
+
+    \subsection{Task: The Rainmaker Design}
+    \begin{center}
+        \label{tab:TheRainmakerDesign}
+        \begin{longtable}{|>{\centering}p{0.1\textwidth}|>{\centering}p{0.2\textwidth}|>{\arraybackslash}p{0.65\textwidth}|} 
+            \hline
+            \hline
+            \thead{Qst. Nr.} & \thead{Answer} & \thead{Explanation} \\ 
+            \hline
+            \hline
+            \multicolumn{3}{|c|}{\textbf{Question 37-40}} \\ 
+            \hline
+            \hline
+            37 & fans & \textbf{Paragraph G:} ...temperature, humidity, and sunlight. \redhighlight{On windless days, fans ensure a constant flow of air} through the greenhouse.... \\ \hline
+            38 & solar panels & \textbf{Paragraph G:} ..."We can run the entire operation of one 13-amp plug, and in the future, \redhighlight{we could make it entirely independent of the grid, powered from a few solar panels}."... \\ \hline
+            39 & construction costs & \textbf{Paragraph H:} \redhighlight{Critics point out that construction costs of around \$4 a square foot are quite high}... \\ \hline
+            40 & environmentally-friendly & \textbf{Paragraph H:} ...Besides, \redhighlight{it really suggests an environmentally-friendly way of providing air conditioning on a scale large enough to cool large greenhouses} where crops can be grown despite the high outside temperatures.... \\ \hline
+            \hline
+        \end{longtable}
+    \end{center}
+    
+
+
+    \vspace{12cm}
+    \par \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+    \par \LaTeX$\ $crafted by \href{https://github.com/bu1th4nh}{bu1th4nh}. 
+    \par Powered, inspired and motivated by Hard Dance, Counter-Strike: Global Offensive and Disney Princesses
+
+\end{document}
+
+% Created by bu1th4nh
+% Powered, inspired and motivated by Electronic/Dance Music, Counter-Strike: Global Offensive and Disney Princesses
