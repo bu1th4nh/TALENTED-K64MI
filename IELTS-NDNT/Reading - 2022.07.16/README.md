@@ -6,6 +6,6 @@
 * File `BuiTienThanh_20220716.tex` là file mã nguồn Latex
 * File `BuiTienThanh_20220716.pdf` là file bài nộp
 
-Các bạn có thể mở các file này trên Overleaf: [https://www.overleaf.com/](https://www.overleaf.com/)
+Các bạn có thể mở các file này trên Overleaf: [https://www.overleaf.com/](https://www.overleaf.com/). Còn Latex là gì thì các bạn xem tại [https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes)
 
 `-bu1th4nh`
