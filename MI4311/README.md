@@ -1,6 +1,6 @@
 # Thuật toán Gomory giải quy hoạch nguyên toàn phần và quy hoạch nguyên hỗn hợp
 
-### Cách sử dụng
+## Cách sử dụng
 
 Chương trình giải quyết bài toán sau:
 
@@ -17,8 +17,10 @@ $$ \min<\boldsymbol{c}, \boldsymbol{x}> \quad \text{s.t.} \quad \boldsymbol{Ax} 
 * `integer_pos`: Danh sách chỉ số của các biến cần nguyên. Lưu ý đánh chỉ số từ 0 và khi `integer_type = "full"`, tham số này không cần thiết
 * `penalty_index`: Danh sách chỉ số của các biến phạt. Lưu ý đánh chỉ số từ 0
 
+Các ví dụ và cài đặt bài toán được trình bày chi tiết trong file `gomory.ipynb`.
 
-### Ưu điểm và hạn chế
+
+## Ưu điểm và hạn chế
 
 * Ưu điểm
     * Chương trình sẽ đưa ra lời giải chi tiết cho bài toán với các chỉ số đánh số từ 1
@@ -29,3 +31,6 @@ $$ \min<\boldsymbol{c}, \boldsymbol{x}> \quad \text{s.t.} \quad \boldsymbol{Ax} 
     * Việc đánh chỉ số chưa thống nhất giữa input và output
 
 
+## Tác giả
+
+Bùi Tiến Thành ([@bu1th4nh](https://www.facebook.com/bu1th4nh.127/))
