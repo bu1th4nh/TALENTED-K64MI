@@ -18,17 +18,17 @@ import ujson as json
 
 from sklearn import metrics
 from sklearn.model_selection import KFold
-
+from sklearn.metrics import mean_absolute_error
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--epochs', type=int, default=100)
-parser.add_argument('--batch_size', type=int, default=64)
+parser.add_argument('--batch_size', type=int, default=96)
 parser.add_argument('--impute_weight', type=float, default=1)
 parser.add_argument('--label_weight', type=float, default=1)
 parser.add_argument('--C', type=str, default='PDTW')
-parser.add_argument('--T', type=int, default=48)
-parser.add_argument('--D', type=int, default=35)
-parser.add_argument('--k', type=int, default=6)
+parser.add_argument('--T', type=int, default=96)
+parser.add_argument('--D', type=int, default=10)
+parser.add_argument('--k', type=int, default=10)
 parser.add_argument('--factor', type=int, default=3)
 parser.add_argument('--dropout', type=float, default=0.2)
 args = parser.parse_args()
@@ -47,8 +47,8 @@ def train(model, model_save_path=None):
 
     train_iter, test_iter = data_loader.get_loader(data_path='../data/json/split', batch_size=args.batch_size)
 
-    AUC_max_test = 0.0
-    AUC_max_train = 0.0
+    MAE_max_test = 0.0
+    MAE_max_train = 0.0
 
 
     for epoch in range(args.epochs):
@@ -63,7 +63,7 @@ def train(model, model_save_path=None):
             deltas_f = data['forward']['deltas']
             # deltas_b = data['backward']['deltas'].flip(dims=[1])
 
-            labels = data['labels'].view(-1, 1)
+            labels = data['labels']
 
             tSt = datetime.datetime.now()
 
@@ -75,10 +75,11 @@ def train(model, model_save_path=None):
             x_loss = torch.sum(torch.abs(values - imput) * masks) / (torch.sum(torch.mean(masks, dim=1)) + 1e-5)
 
             # y_loss = binary_cross_entropy_with_logits(out, labels, reduce=False)
+            
             # is_train = data['is_train'].view(-1, 1)
             # y_loss = torch.sum(y_loss * is_train) / (torch.sum(is_train) + 1e-5)
 
-            y_loss = F.binary_cross_entropy_with_logits(out, labels)
+            y_loss = (torch.nn.L1Loss())(out, labels)
 
             loss = args.impute_weight * x_loss + args.label_weight * y_loss
 
@@ -95,18 +96,18 @@ def train(model, model_save_path=None):
                     '\r Progress epoch {}, {:.2f}%, average loss {}'.format(epoch, (idx + 1) * 100.0 / len(train_iter),
                                                                             run_loss / (idx + 1.0)), )
 
-        AUC_test = evaluate(model, test_iter)
-        AUC_train = evaluate(model, train_iter)
-        # if AUC_test > AUC_max_test and AUC_test > 0.84 and model_save_path is not None:
-        #     torch.save(model.state_dict(), model_save_path + '/test_' + str(AUC_test))
+        MAE_test = evaluate(model, test_iter)
+        MAE_train = evaluate(model, train_iter)
+        # if MAE_test > MAE_max_test and MAE_test > 0.84 and model_save_path is not None:
+        #     torch.save(model.state_dict(), model_save_path + '/test_' + str(MAE_test))
 
-        AUC_max_test = max(AUC_test, AUC_max_test)
-        AUC_max_train = max(AUC_train, AUC_max_train)
+        MAE_max_test = max(MAE_test, MAE_max_test)
+        MAE_max_train = max(MAE_train, MAE_max_train)
 
-        print('AUC_train %f, max %f' % (
-        AUC_train, AUC_max_train))
-        print('AUC_test %f, max %f' % (
-        AUC_test, AUC_max_test))
+        print('MAE_train %f, max %f' % (
+        MAE_train, MAE_max_train))
+        print('MAE_test %f, max %f' % (
+        MAE_test, MAE_max_test))
 
 
 
@@ -130,7 +131,7 @@ def evaluate(model, val_iter):
         out, imput = model(values, masks, deltas_f)
 
         # collect test label & prediction
-        pred = torch.sigmoid(out).data.cpu().numpy()
+        pred = out.data.cpu().numpy()
         label = label.data.cpu().numpy()
 
         labels += label.tolist()
@@ -140,9 +141,9 @@ def evaluate(model, val_iter):
     labels = np.asarray(labels).astype('int32')
     preds = np.asarray(preds)
 
-    AUC = metrics.roc_auc_score(labels, preds)
+    MAE = mean_absolute_error(labels, preds)
 
-    return AUC
+    return MAE
 
 
 
@@ -160,16 +161,16 @@ def run():
     elif args.C == 'ones':
         C = torch.ones(35, 35).requires_grad_(False)
     elif args.C == 'PDTW':
-        C = torch.Tensor(pd.read_csv('../data/PDTW_0.5.csv', header=None).to_numpy()).requires_grad_(
+        C = torch.Tensor(pd.read_csv('../CME/matrix/PDTW_0.csv', header=None).to_numpy()).requires_grad_(
             False)
     else:
         print('Unknow C! C is set to \'PDTW\'!')
-        C = torch.Tensor(pd.read_csv('../data/PDTW_0.5.csv', header=None).to_numpy()).requires_grad_(
+        C = torch.Tensor(pd.read_csv('../CME/matrix/PDTW_0.csv', header=None).to_numpy()).requires_grad_(
             False)
     print(args.C, C)
 
 
-    model = LIFENet(D=args.D, k=args.k, T=args.T, n_group=3, out_size=1, C=C, F=args.factor, dropout=args.dropout)
+    model = LIFENet(D=args.D, k=args.k, T=args.T, n_group=3, out_size=10, C=C, F=args.factor, dropout=args.dropout)
     total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print('Total params is {}'.format(total_params))
     #

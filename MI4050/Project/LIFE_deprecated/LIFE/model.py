@@ -9,9 +9,9 @@ class LIFENet(nn.Module):
     def __init__(self, D, k, T, n_group, out_size, C=None, F=3, dropout=0.2):
         '''
         Feature Separated Attention (LIFE) Network
-        :param D: dimension of MTS = 10
+        :param D: dimension of MTS = 96
         :param k: dimension of each feature part = 10
-        :param T: max length of time series data = len(Ariel)
+        :param T: max length of time series data = 96
         :param C: correlation matrix
         :param out_size: dimension of output = 10
         :param F: number of interpolation timestamps F
@@ -276,7 +276,7 @@ class ImputationModule(nn.Module):
 class PredictionModule(nn.Module):
     def __init__(self, kD, F, out_size):
         super(PredictionModule, self).__init__()
-        self.fc = nn.Linear(int(kD * F), out_size)
+        self.fc = nn.Linear((kD * F), out_size)
         # nn.init.normal_(self.fc.weight, std=0.02)
         # nn.init.normal_(self.fc.bias, 0)
 

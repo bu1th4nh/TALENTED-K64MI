@@ -6,14 +6,17 @@ import matplotlib
 import os
 import ot
 from dtaidistance import dtw
+from tqdm import tqdm
+import json
 
 
 matplotlib.use('Agg')
 
 id_list = os.listdir('../data/json/split')
 content = []
-for id in id_list:
-    content.append(open('../data/json/split/'+id).readline())
+for id in tqdm(id_list, desc="Loading data"):
+    content.append(json.load(open('../data/json/split/'+id)))
+
 
 p_list = [0, 0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0.5, 1.0, 10, 100]
 # p_list = [0]
@@ -34,12 +37,15 @@ for epoch in range(len(p_list)):
     penalty = p_list[epoch]
     print('p:{}'.format(penalty))
     w = None
-    length = 48
-    for i in range(len(content)):
+    length = 96
+    df = None
+    for i in tqdm(range(len(content)), desc=f'Processing p = {penalty}'):
     # for i in range(100):
-        if i % 20 == 0:
-            print('Processing {} of {}'.format(i, len(content)))
-        df = pd.read_json(content[i])
+        # if i % 20 == 0:
+        #     print('Processing {} of {}'.format(i, len(content)))
+
+        df = (content[i])
+
         df_values = pd.DataFrame(df['forward']['values'])
         # df_forward = pd.DataFrame(df['forward']['forwards'])
         df_mask = pd.DataFrame(df['forward']['masks'])
@@ -54,14 +60,14 @@ for epoch in range(len(p_list)):
         num = df_mask.sum()
         # miss_num = (df_deltas-1).sum()
         miss_num = (df_deltas * (1-df_mask)).sum()
-        miss_num = np.tile(miss_num, (35,1))
+        miss_num = np.tile(miss_num, (10,1))
         penalty_matrix = miss_num + miss_num.transpose()
 
 
         distance += penalty_matrix * penalty
         # distance_f += penalty_matrix * penalty
 
-        num = np.tile(num, (35,1))
+        num = np.tile(num, (10,1))
         w_matrix = (num + num.transpose())/(2*length)
 
         # df_dtw += distance
@@ -108,18 +114,19 @@ for epoch in range(len(p_list)):
     # plt.close()
 
     df_dtw_inv = normalization(1/df_dtw)
-    column_names = [i for i in range(1,36)]
+    column_names = [i for i in range(1,11)]
     df_dtw_inv = pd.DataFrame(df_dtw_inv, columns=column_names, index=column_names)
     plt.figure()
     sns.heatmap(abs(df_dtw_inv), cmap='Reds')
 
 
     # plt.savefig('../../../docs/figures/POT/p_inv_' + str(penalty) + '.eps', format='eps', dpi=300, bbox_inches='tight')
-    plt.savefig('figures/PDTW/p_' + str(penalty) + '.png', format='png', bbox_inches='tight')
+    plt.savefig('figures/PDTW/p_' + str(penalty) + '.pdf', format='pdf', bbox_inches='tight')
     plt.close()
 
     # np.savetxt('../data/POT_exp_' + str(penalty) + '.csv', df_ot_exp.to_numpy(), delimiter=',')
     np.savetxt('matrix/PDTW_' + str(penalty) + '.csv', df_dtw_inv.to_numpy(), delimiter=',')
+    print(f"p = {penalty} is done!")
 
 
 print('Done! Figures are saved to \'{}\', Correlation Matrices are saved to \'{}\''.format('figures/PDTW/','matrix/'))
