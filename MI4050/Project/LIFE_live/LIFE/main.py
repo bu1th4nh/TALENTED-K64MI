@@ -24,11 +24,11 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolu
 from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--epochs', type=int, default=200)
+parser.add_argument('--epochs', type=int, default=140)
 parser.add_argument('--batch_size', type=int, default=96)
 parser.add_argument('--impute_weight', type=float, default=1)
 parser.add_argument('--label_weight', type=float, default=1)
-parser.add_argument('--C', type=str, default='PDTW')
+parser.add_argument('--C', type=str, default='PDTW0.01')
 parser.add_argument('--T', type=int, default=128)
 parser.add_argument('--D', type=int, default=10)
 parser.add_argument('--k', type=int, default=10)
@@ -56,6 +56,9 @@ elif(args.metric == "MAPE"):
     loss_eval   = mean_absolute_percentage_error
     loss_str    = "MAPE"
 
+
+loss_module = loss_module.cuda();
+
 Ariel = pd.DataFrame(columns=['loss', f'{loss_str}_train', f'{loss_str}_test', f'{loss_str}_min_train', f'{loss_str}_min_test', 'time'])
 print("Current metric: ", loss_str)
 
@@ -79,6 +82,7 @@ def train(model, model_save_path=None):
 
 
     for epoch in range(args.epochs):
+        print("----------------------------------- Epoch #{} -----------------------------------".format(epoch + 1))
         model.train()
 
         run_loss = 0.0
