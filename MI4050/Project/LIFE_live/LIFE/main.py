@@ -142,10 +142,20 @@ def train(model, model_save_path=None):
         metric_test, metric_min_test))
 
         Ariel.loc[epoch] = [run_loss / (idx + 1.0), metric_train, metric_test, metric_min_train, metric_min_test, np.mean(train_time)]
-
+   
         if(epoch % 4 == 0 or epoch == args.epochs - 1): 
-            Ariel.to_csv(model_save_path + '/Loss_log_' + loss_str + '_' + args.C + '_' + str(args.factor) + '_' + str(args.dropout) + '.csv')
-            print("Snapshot loss saved to" + model_save_path + '/Loss_log_' + loss_str + '_' + args.C + '_' + str(args.factor) + '_' + str(args.dropout) + '.csv')
+            Ariel.to_csv(
+                model_save_path + '/Loss_log_' + loss_str + '_C=' + args.C + '_T=' + str(args.T) + '_k=' + str(args.k) + '_' + cur_time.strftime("%Y_%m_%d_%H_%M_%S") + '.csv'
+            )
+            print("Snapshot loss saved to" + 
+                model_save_path + '/Loss_log_' + loss_str + '_C=' + args.C + '_T=' + str(args.T) + '_k=' + str(args.k) + '_' + cur_time.strftime("%Y_%m_%d_%H_%M_%S") + '.csv'
+            )
+
+
+    cur_time = datetime.datetime.now()
+    torch.save(model, 
+                model_save_path + '/model_' + loss_str + '_C=' + args.C + '_T=' + str(args.T) + '_k=' + str(args.k) + '_' + cur_time.strftime("%Y_%m_%d_%H_%M_%S") + '.pt'
+    )
 
 
 
@@ -224,8 +234,9 @@ def run():
         model = model.cuda()
 
     cur_time = datetime.datetime.now()
-    model_save_path = os.path.join('../model', cur_time.strftime("%Y_%m_%d_%H_%M_%S"))
-    os.makedirs(model_save_path)
+    model_save_path = '../model' + "_T=" + str(args.T) + "_k=" + str(args.k)    
+    if not os.path.exists(model_save_path):
+        os.makedirs(model_save_path)
     # model_save_path = None
     train(model, model_save_path=model_save_path)
 

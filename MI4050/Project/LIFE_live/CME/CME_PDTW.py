@@ -9,6 +9,11 @@ from dtaidistance import dtw
 from tqdm import tqdm
 import json
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--T', type=int, default=128)
+args = parser.parse_args()
+
 
 matplotlib.use('Agg')
 
@@ -39,7 +44,7 @@ for epoch in range(len(p_list)):
     penalty = p_list[epoch]
     print('p:{}'.format(penalty))
     w = None
-    length = 96
+    length = args.T
     df = None
     for i in tqdm(range(len(content)), desc=f'Processing p = {penalty}'):
     # for i in range(100):
@@ -124,7 +129,7 @@ for epoch in range(len(p_list)):
 
 
     # plt.savefig('../../../docs/figures/POT/p_inv_' + str(penalty) + '.eps', format='eps', dpi=300, bbox_inches='tight')
-    plt.savefig('figures/PDTW/p_' + str(penalty) + '.pdf', format='pdf', bbox_inches='tight')
+    plt.savefig('figures/PDTW/p_' + str(penalty) + "_" + str(args.T) + '.pdf', format='pdf', bbox_inches='tight')
     plt.close()
 
     # np.savetxt('../data/POT_exp_' + str(penalty) + '.csv', df_ot_exp.to_numpy(), delimiter=',')
