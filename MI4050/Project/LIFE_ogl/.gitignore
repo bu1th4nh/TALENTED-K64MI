@@ -1,0 +1,5 @@
+/data/*
+/data_old/*
+/CME/figures/*
+/CME/matrix/*
+*.pyc
