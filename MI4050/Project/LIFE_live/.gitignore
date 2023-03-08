@@ -4,3 +4,5 @@
 /CME/matrix/*
 *.pyc
 /LIFE2/*
+*.pt
+*.log

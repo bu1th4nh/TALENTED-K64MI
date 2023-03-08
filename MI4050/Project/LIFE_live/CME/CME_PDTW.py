@@ -25,7 +25,7 @@ for id in tqdm(id_list, desc="Loading data"):
 Ariel = pd.read_parquet("/home/thanh10973/TALENTED-K64MI/MI4050/Project/DataWater_train_cleansed_phase3.parquet").columns;
 
 
-p_list = [0, 0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0.5, 1.0, 10, 100]
+p_list = [0.5]
 # p_list = [0]
 
 if not os.path.exists('figures/PDTW'):
@@ -34,7 +34,7 @@ if not os.path.exists('figures/PDTW'):
 if not os.path.exists('matrix'):
     os.makedirs('matrix')
 
-p_list = [0, 0.0001, 0.001, 0.01, 0.1, 0.5, 1.0, 10, 100]
+p_list = [0.5]
 for epoch in range(len(p_list)):
     df_null = None
     df_dtw = None
