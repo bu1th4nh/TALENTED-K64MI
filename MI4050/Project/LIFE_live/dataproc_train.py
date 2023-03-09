@@ -35,57 +35,43 @@ args = parser.parse_args()
 # Figure size
 height = 20
 width  = 8
+D = 10
 
-df = pd.read_parquet("../DataWater_train_cleansed_phase3.parquet")
-
-Ariel = df[:int(len(df)//5*4)]
-Belle = df[int(len(df)//5*4):]
-
-attributes  = Ariel.columns
-mean        = Ariel.describe().loc["mean", :].to_numpy()
-std         = Ariel.describe().loc["std", :].to_numpy()
-D           = len(attributes)
-T           = len(Ariel)
-
-print("Mean: ", mean);
-print("Std:  ", std);
-
-
-# Do data được đo theo giờ nên ta có thể chuyển qua thời gian tương đối
-initial_time = Ariel.index[0];
-Ariel.reset_index(drop=True, inplace=True)
-for i, col in enumerate(Ariel.columns):
-    Ariel[col] = Ariel[col].apply(lambda x: (x - mean[i]) / std[i])
-
-
-mask = ~pd.isnull(Ariel)
-print(mask.head(5))
-# pp.ProfileReport(Ariel)
 
 
 n_steps = args.T
+df    = pd.read_parquet("../DataWater_train_cleansed_phase3.parquet")
+Ariel = df[:int(len(df)//5*4)].copy()
+Belle = df[int(len(df)//5*4):].copy()
+
+save_paths = ['data/json/split-train', 'data/json/split-test']
+if not os.path.exists(save_paths[0]):
+    os.makedirs(save_paths[0])
+if not os.path.exists(save_paths[1]):
+    os.makedirs(save_paths[1])
+
+
+
+def normize(df):
+    mean = df.describe().loc["mean", :].to_numpy()
+    std  = df.describe().loc["std", :].to_numpy()
+    for i in range(len(df.columns)):
+        df.iloc[:, i] = (df.iloc[:, i] - mean[i]) / std[i]
+    return (df, mean, std)
 
 def build_delta(start):
     delta = np.zeros((n_steps, D))
     for i in range(1, n_steps):
-        delta[i] = np.ones(D) + (np.ones(D).astype('int') - mask.loc[start + i - 1, :].astype('int')) * delta[i - 1]
+        delta[i] = np.ones(D) + (np.ones(D).astype('int') - mask.iloc[start + i - 1, :].astype('int')) * delta[i - 1]
     return delta
 
-
-
-idx_list = []
-start = 0;
-end = 0;
-
-for i in tqdm(range(n_steps, T), desc="Building sample index list"):
-    if(not np.any(pd.isnull(Ariel.loc[i, :])) and i % 3 == 0): 
-        idx_list.append((i - n_steps, i))
-
-
-print(len(idx_list))
-
+    
 
 def parse_rec(values, masks, deltas):
+
+    assert np.any(pd.isnull(values)) == False
+    assert np.any(pd.isnull(masks)) == False
+    assert np.any(pd.isnull(deltas)) == False
 
     # only used in GRU-D
     forwards = pd.DataFrame(values).fillna(method='ffill').fillna(0.0).iloc[:,:].values
@@ -100,21 +86,38 @@ def parse_rec(values, masks, deltas):
     return rec
 
 
+for idxfp, save_path in enumerate(save_paths):
+    dataaaaaa = Ariel if idxfp == 0 else Belle
 
-save_path = 'data/json/split-train'
-if not os.path.exists(save_path):
-    os.makedirs(save_path)
-for i, (start, end) in tqdm(enumerate(idx_list), desc='Building JSON'):
-    values = Ariel.iloc[start:end].to_numpy()
-    delta  = build_delta(start)
-    mask_  = mask.iloc[start:end].to_numpy()
-    label  = Ariel.loc[end].to_numpy()
+    idx_list = []
+    T        = len(dataaaaaa)
+    mask     = ~pd.isnull(dataaaaaa)
+    dataaaaaa.reset_index(drop=True, inplace=True)
 
-    rec = {'label': label.tolist()}
-    rec['forward']  = parse_rec(values, mask_, delta)
-    rec['backward'] = parse_rec(values, mask_, delta)
-    rec = json.dumps(rec)
 
-    save_file = os.path.join(save_path, str(i))
-    with open(save_file,'w') as f:
-        f.write(rec)
+    for i in tqdm(range(n_steps, T), desc="Building sample index list for {0}".format("train" if idxfp == 0 else "test")):
+        idx_list.append((i - n_steps, i))
+    print("Initial size:", len(idx_list))
+
+
+    true_size = 0;
+    for i, (start, end) in enumerate(tqdm(idx_list, desc='Building JSON train' if idxfp == 0 else 'Building JSON test')):
+        values, mean, std = normize(dataaaaaa.iloc[start:end].copy())
+
+        values = values.fillna(0).to_numpy()
+        delta  = build_delta(start)
+        mask_  = mask.iloc[start:end].to_numpy()
+        label  = (dataaaaaa.loc[end].to_numpy() - mean) / (std + 1e-8);
+
+        if np.any(pd.isnull(label)): continue;
+        true_size += 1
+
+        rec = {'label': label.tolist()}
+        rec['forward']  = parse_rec(values, mask_, delta)
+        rec['backward'] = parse_rec(values, mask_, delta)
+        rec = json.dumps(rec)
+
+        save_file = os.path.join(save_path, str(i))
+        with open(save_file,'w') as f:
+            f.write(rec)
+    print("True size: {0}".format(true_size))

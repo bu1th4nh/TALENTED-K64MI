@@ -48,7 +48,7 @@ if(args.metric == "MSE"):
     loss_eval   = mean_squared_error
     loss_str    = "MSE"
 elif(args.metric == "MAE"):
-    loss_module = nn.L1Loss()
+    loss_module = nn.L1Loss(reduction='mean')
     loss_eval   = mean_absolute_error
     loss_str    = "MAE"
 elif(args.metric == "MAPE"):
@@ -73,7 +73,7 @@ def train(model, model_save_path=None):
 
     train_iter, test_iter = data_loader.get_loader(
         data_train='/home/thanh10973/TALENTED-K64MI/MI4050/Project/LIFE_live/data/json/split-train', 
-        data_valid='/home/thanh10973/TALENTED-K64MI/MI4050/Project/LIFE_live/data/json/split-valid', 
+        data_valid='/home/thanh10973/TALENTED-K64MI/MI4050/Project/LIFE_live/data/json/split-test', 
         batch_size=args.batch_size
     )
 
@@ -89,7 +89,7 @@ def train(model, model_save_path=None):
 
         run_loss = 0.0
         train_time = []
-        for idx, data in tqdm(enumerate(train_iter), desc = 'Training, Epoch #{}'.format(epoch + 1), total = len(train_iter), unit = 'batch'):
+        for idx, data in enumerate(tqdm(train_iter, desc = 'Training, Epoch #{}'.format(epoch + 1), total = len(train_iter), unit = 'batch')):
             data = utils.to_var(data)
             values = data['forward']['values']
             masks = data['forward']['masks']
@@ -177,7 +177,7 @@ def evaluate(model, val_iter, descc):
     preds = []
 
 
-    for idx, data in tqdm(enumerate(val_iter), desc = descc):
+    for idx, data in enumerate(tqdm(val_iter, desc = descc)):
         data = utils.to_var(data)
         values = data['forward']['values']
         masks = data['forward']['masks']
@@ -226,6 +226,9 @@ def run():
             False)
     elif args.C == 'PDTW0.5':
         C = torch.Tensor(pd.read_csv('/home/thanh10973/TALENTED-K64MI/MI4050/Project/LIFE_live/CME/matrix/PDTW_0.5.csv', header=None).to_numpy()).requires_grad_(
+            False)    
+    elif args.C == 'PDTW1.0':
+        C = torch.Tensor(pd.read_csv('/home/thanh10973/TALENTED-K64MI/MI4050/Project/LIFE_live/CME/matrix/PDTW_1.0.csv', header=None).to_numpy()).requires_grad_(
             False)
     else:
         print('Unknow C! C is set to \'PDTW\'!')

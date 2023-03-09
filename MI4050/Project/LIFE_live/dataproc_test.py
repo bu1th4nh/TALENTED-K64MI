@@ -36,36 +36,25 @@ args = parser.parse_args()
 height = 20
 width  = 8
 
-
 df = pd.read_parquet("../DataWater_train_cleansed_phase3.parquet")
 
 # Ariel = df[:int(len(df)//5*4)]
 Belle = df[int(len(df)//5*4):].copy()
 
+D = 10
+T = len(Belle)
 
-attributes  = Belle.columns
-mean        = Belle.describe().loc["mean", :].to_numpy()
-std         = Belle.describe().loc["std", :].to_numpy()
-D           = len(attributes)
-T           = len(Belle)
-
-
-print("D: ", D);
-print("T: ", T);
-print("Mean: ", mean);
-print("Std:  ", std);
-
-
-# Do data được đo theo giờ nên ta có thể chuyển qua thời gian tương đối
-initial_time = Belle.index[0];
-Belle.reset_index(drop=True, inplace=True)
-for i, col in enumerate(Belle.columns):
-    Belle[col] = Belle[col].apply(lambda x: (x - mean[i]) / std[i])
+def normize(df):
+    mean = df.describe().loc["mean", :].to_numpy()
+    std  = df.describe().loc["std", :].to_numpy()
+    for i in range(len(df.columns)):
+        df.iloc[:, i] = (df.iloc[:, i] - mean[i]) / std[i]
+    return (df, mean, std)
 
 
 mask = ~pd.isnull(Belle)
 print(mask.head(5))
-# pp.ProfileReport(Belle)
+# pp.ProfileReport(Ariel)
 
 
 n_steps = args.T
@@ -73,7 +62,7 @@ n_steps = args.T
 def build_delta(start):
     delta = np.zeros((n_steps, D))
     for i in range(1, n_steps):
-        delta[i] = np.ones(D) + (np.ones(D).astype('int') - mask.loc[start + i - 1, :].astype('int')) * delta[i - 1]
+        delta[i] = np.ones(D) + (np.ones(D).astype('int') - mask.iloc[start + i - 1, :].astype('int')) * delta[i - 1]
     return delta
 
 
@@ -83,7 +72,7 @@ start = 0;
 end = 0;
 
 for i in tqdm(range(n_steps, T), desc="Building sample index list"):
-    if(not np.any(pd.isnull(Belle.loc[i, :])) and i % 3 == 0): 
+    if(not np.any(pd.isnull(Belle.iloc[i, :]))): 
         idx_list.append((i - n_steps, i))
 
 
@@ -91,6 +80,10 @@ print(len(idx_list))
 
 
 def parse_rec(values, masks, deltas):
+
+    assert np.any(pd.isnull(values)) == False
+    assert np.any(pd.isnull(masks)) == False
+    assert np.any(pd.isnull(deltas)) == False
 
     # only used in GRU-D
     forwards = pd.DataFrame(values).fillna(method='ffill').fillna(0.0).iloc[:,:].values
@@ -106,14 +99,18 @@ def parse_rec(values, masks, deltas):
 
 
 
-save_path = 'data/json/split-valid'
+save_path = 'data/json/split-train'
 if not os.path.exists(save_path):
     os.makedirs(save_path)
-for i, (start, end) in tqdm(enumerate(idx_list), desc='Building JSON'):
-    values = Belle.iloc[start:end].to_numpy()
+for i, (start, end) in enumerate(tqdm(idx_list, desc='Building JSON')):
+
+    Belle.fillna(0, inplace=True);
+    values, mean, std = normize(Belle.iloc[start:end].copy())
+    
+    values = values.fillna(0).to_numpy()
     delta  = build_delta(start)
     mask_  = mask.iloc[start:end].to_numpy()
-    label  = Belle.loc[end].to_numpy()
+    label  = (Belle.iloc[end].to_numpy() - mean) / std;
 
     rec = {'label': label.tolist()}
     rec['forward']  = parse_rec(values, mask_, delta)
